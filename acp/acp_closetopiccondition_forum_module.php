@@ -28,20 +28,20 @@ class acp_closetopiccondition_forum_module
 		$action	= $request->variable('action', '');
 //		$submit = (isset($_POST['submit'])) ? true : false;
 
-        //$form_key = 'limitpostsintopic_forum';
-        //add_form_key($form_key);
-        //$error = array();
-        //// We validate the complete config if whished
+		//$form_key = 'limitpostsintopic_forum';
+		//add_form_key($form_key);
+		//$error = array();
+		//// We validate the complete config if whished
 
-        //if ($submit && !check_form_key($form_key))
-        //{
-        //    $error[] = $user->lang['FORM_INVALID'];
-        //}
-        //// Do not write values if there is an error
-        //if (sizeof($error))
-        //{
-        //    $submit = false;
-        //}
+		//if ($submit && !check_form_key($form_key))
+		//{
+		//	$error[] = $user->lang['FORM_INVALID'];
+		//}
+		//// Do not write values if there is an error
+		//if (sizeof($error))
+		//{
+		//	$submit = false;
+		//}
 		$template->assign_vars(array(
 			//'U_ACTION'			=> $this->u_action . '&amp;action=add',
 			'U_ACTION'			=> 'add',

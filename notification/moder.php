@@ -17,8 +17,8 @@ namespace alg\closetopiccondition\notification;
 
 class moder extends \phpbb\notification\type\base
 {
-    //const PARSE_AS_HTML = 0;
-    //const PARSE_AS_BBCODE = 1;
+	//const PARSE_AS_HTML = 0;
+	//const PARSE_AS_BBCODE = 1;
 	const NOTY_BBCOD_OPTIONS = 7;
 	/**
 	* Get notification type name
@@ -62,7 +62,7 @@ class moder extends \phpbb\notification\type\base
 	public function set_notifications_table($notifications_table)
 	{
 		$this->notifications_table = $notifications_table;
-	}       
+	}
 	public function set_user_loader(\phpbb\user_loader $user_loader)
 	{
 		$this->user_loader = $user_loader;
@@ -108,7 +108,7 @@ class moder extends \phpbb\notification\type\base
 		), $options);
 
 		$users =  $data['members_ids'];
-                $notification = $this->notification_manager->get_item_type_class($this->get_type(), $data);
+				$notification = $this->notification_manager->get_item_type_class($this->get_type(), $data);
 		return $this->check_user_notification_options($users, $options);
 	}
 
@@ -187,12 +187,12 @@ class moder extends \phpbb\notification\type\base
 			$this->get_data('noty_bitfield'),
 			$this->get_data('noty_options')
 		);
-        //return $this->user->lang(
-        //    'LIMITPOSTSINTOPIC_NOTIFICATION_REFERENCE',
-        //    censor_text($this->get_data('topic_name'))
+		//return $this->user->lang(
+		//	'LIMITPOSTSINTOPIC_NOTIFICATION_REFERENCE',
+		//	censor_text($this->get_data('topic_name'))
 		//);
-       // return '<div id="an_text"  class="an_text" >' .  $noty_content . '</div>';
-        return $noty_content . 'qwerty22';
+	   // return '<div id="an_text"  class="an_text" >' .  $noty_content . '</div>';
+		return $noty_content . 'qwerty22';
 	}
 
 	/**
@@ -202,7 +202,7 @@ class moder extends \phpbb\notification\type\base
 	*/
 	public function get_email_template_variables()  //todo
 	{
-                    return null;
+		return null;
 	}
 
 	/**
@@ -248,6 +248,5 @@ class moder extends \phpbb\notification\type\base
 			$data = unserialize($row['notification_data']);
 		}
 		return $this->create_insert_array($commandgame_data);
-	}        
-        
+	}
 }
