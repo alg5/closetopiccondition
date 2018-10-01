@@ -1,0 +1,42 @@
+imports:
+    - { resource: tables.yml }
+services:
+    alg.closetopiccondition.listener:
+        class: alg\closetopiccondition\event\listener
+        arguments:
+            - '@controller.helper'
+            - '@template'
+        tags:
+            - { name: event.listener }
+    alg.closetopiccondition.closetopiccondition_handler:
+        class: alg\closetopiccondition\controller\closetopiccondition_handler
+        arguments:
+            - @dbal.conn
+            - @auth
+            - @user
+            - @user_loader
+            - %core.root_path%
+            - %core.php_ext%
+            - @request
+            - @controller.helper
+            - @service_container
+            - @content.visibility
+            - @config
+            - %tables.users%
+            - %tables.groups%
+            - %tables.closetopiccondition_options%
+
+    alg.closetopiccondition.cron.task.closetopic:
+        class: alg\closetopiccondition\cron\task\closetopic
+        arguments:
+            - @config
+            - @dbal.conn
+            - @auth
+            - @user
+            - %core.root_path%
+            - %core.php_ext%
+            - %tables.closetopiccondition_options%
+        calls:
+            - [set_name, [cron.task.closetopic]]
+        tags:
+            - { name: cron.task }

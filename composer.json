@@ -1,0 +1,27 @@
+{
+    "name": "alg/closetopiccondition",
+    "type": "phpbb-extension",
+    "homepage": "chugunok.net",
+    "version": "1.0.0",
+    "time": "2017-02-10",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "alg",
+            "homepage": "chugunok.net",
+            "role": "author"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+      "phpbb/epv": "dev-master"
+    },
+    "extra": {
+        "display-name": "Close Topic By Conditions",
+        "soft-require": {
+            "phpbb/phpbb": "3.1.*@dev"
+        }
+    }
+}

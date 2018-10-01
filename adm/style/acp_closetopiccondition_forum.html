@@ -1,0 +1,141 @@
+<!-- INCLUDE overall_header.html -->
+<h1>{L_ACP_CLOSETOPICCONDITION_FORUM}</h1>
+
+<p>{L_ACP_CLOSETOPICCONDITION_OPTION_EXPLAIN}</p>
+<form id="acp_closetopiccondition" method="post" action="{U_ACTION}">
+	<dl>  
+		<dt><label for="forum">{L_ACP_CLOSETOPICCONDITION_SELECT}:</label></dt>
+		<dd>
+            <select id="forum" name="forum_id">{S_FORUM_OPTIONS}</select>
+             <div id="loader_get"></div>
+            <button class="lp-send" type="submit" name="submit_select_forum"  id="submit_select_forum"><i class="fa fa-download"></i> {L_ACP_CLOSETOPICCONDITION_GET_DATA}</button>
+
+        </dd>
+        <dd class="full" style="text-align: left;">
+            <lable for="forumsearch">{L_ACP_CLOSETOPICCONDITION_LIVE_SEARCH_CAPTION}{L_COLON}</lable>
+            <input id="forumsearch" class="inputbox search " type='search'   placeholder="{L_ACP_CLOSETOPICCONDITION_SEARCH_FORUM}"  title="{L_ACP_CLOSETOPICCONDITION_SEARCH_FORUM_TOOLTIP}" autocomplete="off" />
+        </dd>
+
+	</dl>
+	<div id="blockCloseTopic" style="display:none;">
+        <h2>{L_ACP_CLOSETOPICCONDITION_FORUM_SELECTED}{L_COLON} <span id="spForumName"></span></h2>
+        <input type="radio" name="chkConditions" class="radio"  value="1" />{L_ACP_CLOSETOPICCONDITION_YES} &nbsp;
+        <input type="radio" name="chkConditions" class="radio" value="0" />{L_ACP_CLOSETOPICCONDITION_NO} &nbsp;
+        <br />
+        <div id="blockCloseTopicOptions"  style="border: 1px solid gray; padding:5px;">
+            <input type="checkbox" id= "chkBlockLimitPost" name="chkBlockLimitPost"  class="radio"  />&nbsp;{L_ACP_CLOSETOPICCONDITION_LIMIT_POSTS}
+           <div id="blockLimitPost">
+               <fieldset>
+                    <dl>
+		                <dt><label for="limitposts_number">{L_ACP_CLOSETOPICCONDITION_NUMBER}{L_COLON}</label><br /> 
+                            <span>{L_ACP_CLOSETOPICCONDITION_NUMBER_EXPLAIN}</span>
+                        </dt>
+		                <dd><input type="number" id="limitposts_number" name="limitposts_number"  min="0" max="1000" </dd>
+	                </dl>
+                </fieldset>
+            </div>
+            <input type="checkbox" id= "chkBlockTopicPeriodInactive" name="chkBlockTopicPeriodInactive"  class="radio"  />&nbsp;{L_ACP_CLOSETOPICCONDITION_INACTIVE_PERIOD_CONDITION}
+            <div id="blockTopicPeriodInactive">
+               <fieldset>
+                    <dl>
+		                <dt><label for="limittime_period">{L_ACP_CLOSETOPICCONDITION_INACTIVE_PERIOD}{L_COLON}</label><br /> 
+                            <span>{L_ACP_CLOSETOPICCONDITION_INACTIVE_PERIOD_EXPLAIN}</span>
+                        </dt>
+		                <dd><input type="number" id="limittime_period" name="limittime_period"  min="0" max="1000" /> <span>{L_ACP_CLOSETOPICCONDITION_MONTHES}</span></dd>
+	                </dl>
+                </fieldset>
+            </div>
+        <fieldset >
+	            <legend>{L_ACP_CLOSETOPICCONDITION_NUMBER_OPTIONS}</legend>
+                <dl>
+                    <dt>
+                        <label for="chkCloseOnlyNormalTopics">{L_ACP_CLOSEALLTOPICS_NO}{L_COLON}</label><br />
+                        <span>{L_ACP_CLOSEALLTOPICS_NO_EXPLANE}</span>
+                    </dt>
+                    <dd>
+                        <input type="radio" name="chkCloseOnlyNormalTopics" class="radio"  value="1" />{L_ACP_CLOSETOPICCONDITION_GENERAL_TOPICS} &nbsp;
+                        <input type="radio" name="chkCloseOnlyNormalTopics" class="radio" value="0" />{L_ACP_CLOSETOPICCONDITION_ALL_TOPICS} &nbsp;
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <label for="chkCloseByEachCondition">{L_ACP_CLOSE_BY_SOME_CONDITION}{L_COLON}</label><br />
+                        <span>{L_ACP_CLOSE_BY_SOME_CONDITION_EXPLANE}</span>
+                    </dt>
+                    <dd>
+                        <input type="radio" name="chkCloseByEachCondition" class="radio"  value="1" />{L_ACP_CLOSE_BY_EACH_CONDITION} &nbsp;
+                        <input type="radio" name="chkCloseByEachCondition" class="radio" value="0" />{L_ACP_CLOSE_BY_ALL_CONDITION} &nbsp;
+                    </dd>
+                </dl>
+                <dl>
+		            <dt>
+                        <input type="checkbox" id= "chkLastPost" name="chkLastPost" class="radio" />&nbsp;
+                        <label for="chkLastPost">{L_ACP_CLOSETOPICCONDITION_LAST_POST}</label><br /><span>{L_ACP_CLOSETOPICCONDITION_LAST_POST_EXPLAIN}</span>
+                    </dt>
+		            <dd>
+                        <div id="blockLastPost">
+                         <fieldset>
+                            <legend><i class="fa fa-comment">&nbsp;{L_ACP_CLOSETOPICCONDITION_LAST_POST_SETTING}</i></legend>
+                            <dl>
+                                <dt><label for="txtLastPost">{L_ACP_CLOSETOPICCONDITION_LAST_POST_TEXT}{L_COLON}</label><br /> 
+                                    <span>{L_ACP_CLOSETOPICCONDITION_LAST_POST_TEXT_EXPLAIN}{L_ACP_CLOSETOPICCONDITION_LAST_POST_TEXT_EXPLAIN2}</span>
+                                </dt>
+                                <dd><textarea rows="6" id="txtLastPost" name="txtLastPost" cols="52"></textarea></dd>
+                            </dl>
+                            <dl>
+			                    <dt><label for="usersearch">{L_ACP_CLOSETOPICCONDITION_LAST_POST_USER}{L_COLON}</label><br />
+                                    <span>{L_ACP_CLOSETOPICCONDITION_LAST_POST_USER_EXPLAIN}{L_ACP_CLOSETOPICCONDITION_LAST_POST_TEXT_EXPLAIN2}</span>
+                                </dt>
+                                 <dd><input id="usersearch" name="usersearch" class="inputbox search " type='search'   placeholder="{L_ACP_CLOSETOPICCONDITION_SEARCH_USER}"  title="{L_ACP_CLOSETOPICCONDITION_SEARCH_USER_TOOLTIP}" autocomplete="off" />
+                                </dd>
+			                </dl> 
+                        </fieldset>
+                        </div>
+                    </dd>
+	            </dl>
+                <dl>
+		            <dt>
+                        <input type="checkbox" id= "chkNotySend" name="chkNotySend" class="radio" />&nbsp;
+                        <label for="chkNotySend">{L_ACP_CLOSETOPICCONDITION_NOTY_SEND}</label><br /><span>{L_ACP_CLOSETOPICCONDITION_NOTY_SEND_EXPLAIN}</span>
+                    </dt>
+		            <dd>
+                        <div id="blockNotySend">
+                         <fieldset>
+                            <legend><i class="fa fa-bell">&nbsp;</i>{L_ACP_CLOSETOPICCONDITION_NOTY_SEND_SETTING} </legend>
+                            <dl>
+                                <dt><label for="txtTopicPoster">{L_ACP_CLOSETOPICCONDITION_NOTY_SEND_TOPICPOSTER}{L_COLON}</label><br /> 
+                                    <span>{L_ACP_CLOSETOPICCONDITION_LAST_POST_TEXT_EXPLAIN}</span>
+                                </dt>
+                                <dd><textarea rows="6" id="txtTopicPoster" name="txtTopicPoster" cols="52"></textarea></dd>
+                            </dl>
+                            <dl>
+                                <dt><label for="txtModerators">{L_ACP_CLOSETOPICCONDITION_NOTY_SEND_MODERATORS}{L_COLON}</label><br /> 
+                                    <span>{L_ACP_CLOSETOPICCONDITION_LAST_POST_TEXT_EXPLAIN}</span>
+                                </dt>
+                                <dd><textarea rows="6" id="txtModerators" name="txtModerators" cols="52"></textarea></dd>
+			                </dl>
+                            <dl>
+			                    <dt><label for="sender_search">{L_ACP_CLOSETOPICCONDITION_LAST_POST_SENDER}{L_COLON}</label><br />
+                                    <span>{L_ACP_CLOSETOPICCONDITION_LAST_POST_SENDER_EXPLAIN}{L_ACP_CLOSETOPICCONDITION_LAST_POST_TEXT_EXPLAIN2}</span>
+                                </dt>
+                                <dd><input id="sender_search" name="sender_search" class="inputbox search " type='search'   placeholder="{L_ACP_CLOSETOPICCONDITION_SEARCH_USER}"  title="{L_ACP_CLOSETOPICCONDITION_SEARCH_USER_TOOLTIP}" autocomplete="off" />
+                                </dd>
+			                </dl> 
+                        </fieldset>
+                       
+                        </div>
+                    </dd>
+	            </dl>
+            </fieldset>
+            
+    <fieldset class="submit-buttons">
+	    <legend>{L_SUBMIT}</legend>
+        <div id="loader_save"></div>
+        <button class="lp-send" type="submit" name="btnSend"  id="btnSend"><i class="fa fa-upload"></i> {L_ACP_CLOSETOPICCONDITION_SAVE_DATA}</button>
+
+    </fieldset>   
+        </div>       
+
+</div>
+</form>
+<!-- INCLUDE overall_footer.html -->

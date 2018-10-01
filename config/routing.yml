@@ -1,0 +1,24 @@
+alg_closetopiccondition_controller_forum:
+    path: /closetopiccondition/forum
+    defaults: { _controller: alg.closetopiccondition.closetopiccondition_handler:live_search_forum }
+alg_closetopiccondition_controller_user:
+    path: /closetopiccondition/user
+    defaults: { _controller: alg.closetopiccondition.closetopiccondition_handler:live_search_user }
+alg_closetopiccondition_controller_group:
+    path: /closetopiccondition/group
+    defaults: { _controller: alg.closetopiccondition.closetopiccondition_handler:live_search_group }
+alg_closetopiccondition_controller_noty:
+    path: /closetopiccondition/noty
+    defaults: { _controller: alg.closetopiccondition.closetopiccondition_handler:send_notification }
+alg_closetopiccondition_controller_get:
+    path: /closetopiccondition/get
+    defaults: { _controller: alg.closetopiccondition.closetopiccondition_handler:get_forum_options }
+alg_closetopiccondition_controller_save:
+    path: /closetopiccondition/save
+    defaults: { _controller: alg.closetopiccondition.closetopiccondition_handler:save_options }
+alg_closetopiccondition_controller_delete:
+    path: /closetopiccondition/delete
+    defaults: { _controller: alg.closetopiccondition.closetopiccondition_handler:delete_options }
+alg_closetopiccondition_controller_period:
+    path: /closetopiccondition/period
+    defaults: { _controller: alg.closetopiccondition.closetopiccondition_handler:update_period }
