@@ -222,10 +222,10 @@ class closetopiccondition_handler
 					$row['moderator_msg'],
 					$row['moderator_uid'],
 					$row['moderator_options']
-				); 
+				);
 				$moder_message = $ret['text'];
 			}
-			
+
 			$this->return = array(
 				'forum_id'		=> $forum_id ,
 				'IS_CONDITIONS_EXISTS'		=> 1 ,
@@ -255,7 +255,7 @@ class closetopiccondition_handler
 		$json_response = new \phpbb\json_response;
 		$json_response->send($this->return);
 	}
-	
+
 	public function save_options()
 	{
 		$this->user->add_lang_ext('alg/closetopiccondition', 'info_acp_closetopiccondition');
@@ -284,7 +284,7 @@ class closetopiccondition_handler
 		{
 			$txtLastPost = utf8_normalize_nfc($this->request->variable('txtLastPost', '',true));
 			$username = utf8_normalize_nfc($this->request->variable('usersearch', '',true));
-			if($txtLastPost != '' && $username != '')
+			if ($txtLastPost != '' && $username != '')
 			{
 				$usernames[] = $username;
 				if (!function_exists('user_get_id_name'))
@@ -316,21 +316,21 @@ class closetopiccondition_handler
 			}
 
 		}
-		if($chkNotySend)
+		if ($chkNotySend)
 		{
 			$noty_sender_name = utf8_normalize_nfc($this->request->variable('sender_search', '',true));
 			$txtTopicPoster = utf8_normalize_nfc($this->request->variable('txtTopicPoster', '',true));
-			if($txtTopicPoster != '')
+			if ($txtTopicPoster != '')
 			{
 				$txtTopicPoster = $this->parse_text_by_parse_type(closetopiccondition_handler::PARSE_AS_BBCODE, $txtTopicPoster, $uid_user, $bitfield_user, $options_user);
 			}
 			$txtModerators = utf8_normalize_nfc($this->request->variable('txtModerators', '',true));
 			//$txtModer1 = $txtModer;
-			if($txtModerators != '')
+			if ($txtModerators != '')
 			{
 				$txtModerators = $this->parse_text_by_parse_type(closetopiccondition_handler::PARSE_AS_BBCODE, $txtModerators, $uid_moder, $bitfield_moder, $options_moder);
 			}
-			if( ($txtTopicPoster != ''  || $txtModerators != '') && $noty_sender_name != '')
+			if ( ($txtTopicPoster != ''  || $txtModerators != '') && $noty_sender_name != '')
 			{
 				$usernames[] = $noty_sender_name;
 				if (!function_exists('user_get_id_name'))
@@ -350,7 +350,6 @@ class closetopiccondition_handler
 			}
 		}
 		//*****add/update db*****
-		
 
 		//$noty_parse_type = $this->request->variable('noty_parse_type', limitpostsintopic_handler::PARSE_AS_HTML);
 		//$noty_title = utf8_normalize_nfc($this->request->variable('noty_title', '',true));
@@ -375,13 +374,13 @@ class closetopiccondition_handler
 			'lastpost_bitfield'	=> $bitfield_lastpost,
 			'lastpost_options'	=> $options_lastpost,
 			'is_noty_send' => $chkNotySend ? 1 : 0,
- 			'noty_sender_id' => $noty_sender_id,
- 			'noty_sender_name' => $noty_sender_name,
- 			'topicposter_msg' => $txtTopicPoster,
+			'noty_sender_id' => $noty_sender_id,
+			'noty_sender_name' => $noty_sender_name,
+			'topicposter_msg' => $txtTopicPoster,
 			'topicposter_uid' =>$uid_user,
 			'topicposter_bitfield' => $bitfield_user,
 			'topicposter_options' =>$options_user,
- 			'moderator_msg' => $txtModerators,
+			'moderator_msg' => $txtModerators,
 			'moderator_uid' => $uid_moder,
 			'moderator_bitfield' => $bitfield_moder,
 			'moderator_options' => $options_moder,
@@ -420,12 +419,12 @@ class closetopiccondition_handler
 	public function update_period()
 	{
 		$this->user->add_lang_ext('alg/closetopiccondition', 'info_acp_closetopiccondition');
-		$limitposts_period = (int) $this->request->variable('limitposts_period', 1);   
+		$limitposts_period = (int) $this->request->variable('limitposts_period', 1);
 		$this->config->set('closetopiccondition_period', $limitposts_period);
 		$this->config->set('closetopic_gc', 60*60*24 / $limitposts_period);
-		
+
 		//debug crone
-/*	   
+/*
 		$sql = "SELECT  lp.*, f.forum_name, f.forum_type, f.forum_status  FROM " . $this->closetopiccondition_options_table .
 					" lp JOIN " . FORUMS_TABLE . " f on lp.forum_id=f.forum_id" .
 					" WHERE f.forum_type=" . FORUM_POST . " AND f.forum_status <> " . ITEM_LOCKED;
@@ -440,7 +439,7 @@ class closetopiccondition_handler
 			$forums_arr[] = $row;
 		}
 		$this->db->sql_freeresult($result);
-		
+
 		foreach ($forums_arr as $forum)
 		{
 			$forum_id = (int) $forum['forum_id'];
@@ -448,8 +447,8 @@ class closetopiccondition_handler
 			$limittime_period = (int) $forum['limittime_period'];
 			$close_only_normal_topics = (int) $forum['close_only_normal_topics'];
 			$close_by_each_condition = (int) $forum['close_by_each_condition'];
-			$sql = "SELECT * FROM " . TOPICS_TABLE . 
-						" WHERE forum_id=" . $forum_id . 
+			$sql = "SELECT * FROM " . TOPICS_TABLE .
+						" WHERE forum_id=" . $forum_id .
 						" AND topic_status <> " . ITEM_LOCKED;
 			if ( $limitposts_number > 0 && $limittime_period > 0)
 			{
@@ -480,9 +479,9 @@ class closetopiccondition_handler
 			{
 				$sql .= " AND topic_type = " . POST_NORMAL;
 			}
-					
+
 			$result = $this->db->sql_query($sql);
-			
+
 				while ($row = $this->db->sql_fetchrow($result))
 				{
 					$topics[] = $row;
@@ -490,7 +489,7 @@ class closetopiccondition_handler
 					if ($forum['is_last_post'] && $forum['lastposter_id'] && $forum['lastpost_msg'])
 					{
 						//create last post
-						$topic_id = $row['topic_id'];	
+						$topic_id = $row['topic_id'];
 						$this->last_post_replay($forum, $row, $data);
 						$post_id = $data['post_id'];
 						$msg = $forum['lastpost_msg'];
@@ -549,9 +548,9 @@ class closetopiccondition_handler
 								'noty_options'   => $forum['moderator_options'],
 							);
 							$this->add_notification($notification_data, 'alg.closetopiccondition.notification.type.moder');
-							
+
 						}
-						
+
 					}
 				}
 				//add_log('mod', $post_data['forum_id'], $post_data['topic_id'], 'LOG_' . 'LOCK', $post_data['topic_title']);
@@ -563,7 +562,7 @@ class closetopiccondition_handler
 			}
 
 		}
-	   
+
 		//end debug crone
 */
 		//$sub_months = '-' . $limittime_period . ' months';
@@ -591,7 +590,7 @@ class closetopiccondition_handler
 		);
 		$json_response = new \phpbb\json_response;
 		$json_response->send($this->return);
-		
+
 	}
 	#region Notifications
 	// Add notifications
@@ -637,12 +636,12 @@ class closetopiccondition_handler
 //		$this->notification_manager->mark_notifications_read(array(
 //			'alg.closetopiccondition.notification.type.notification_manager ',
 //		), $item_ids, $this->user->data['user_id']);
-//		
+//
 //	// Mark post notifications read for this user in this topic
 //			$this->notification_manager->mark_notifications_read(array(
 //					'alg.closetopiccondition.notification.type.moder',
 //					'alg.closetopiccondition.notification.type.topicposter',
-//			), $item_ids, $this->user->data['user_id']);		
+//			), $item_ids, $this->user->data['user_id']);
 //	}
 
 	#endregion
@@ -737,8 +736,8 @@ class closetopiccondition_handler
 	}
 	function last_post_replay($forum_info, $topic_info, &$data)
 	{
-		$topic_id = $topic_info['topic_id'];   
-		$forum_id = $topic_info['forum_id'];   
+		$topic_id = $topic_info['topic_id'];
+		$forum_id = $topic_info['forum_id'];
 		$post_id = 0;
 
 		$subject= $topic_info['topic_title'];
@@ -770,7 +769,7 @@ class closetopiccondition_handler
 					'post_username'				=> $forum_info['lastposter_name'],
 					'poster_color'				=> $forum_info['lastposter_color'],
 					'forum_name'				=>  $forum_info['forum_name'],
-					'enable_sig'			=> (bool)(!$this->config['allow_sig'] || !$this->auth->acl_get('f_sigs', $topic_info['forum_id']) || !$this->auth->acl_get('u_sig')) ? false : ((isset($reply_data['attach_sig']) ) ? true : false),
+					'enable_sig'			=> (bool) (!$this->config['allow_sig'] || !$this->auth->acl_get('f_sigs', $topic_info['forum_id']) || !$this->auth->acl_get('u_sig')) ? false : ((isset($reply_data['attach_sig']) ) ? true : false),
 					'enable_bbcode'			=> (bool) $bbcode_status,
 					'enable_smilies'		=> (bool) $smilies_status,
 					'enable_urls'			=> (bool) $url_status,
@@ -786,7 +785,7 @@ class closetopiccondition_handler
 					'bbcode_uid'			=> $forum_info['lastpost_uid'],
 					'post_text'				=> $message,
 					'post_visibility'			=> 1,
-				
+
 					'force_approved_state'  => true, // post has already been approved
 				);
 				//$post_data['username'] = $this->user->data['username'];
@@ -800,12 +799,11 @@ class closetopiccondition_handler
 				//print_r('$redirect_url=' . $redirect_url);
 
 				return $data;
-				
-				
+
 				}	
 
-	 }
-	 private function submit_new_post(&$data)
+	}
+	private function submit_new_post(&$data)
 	{
 	//print_r($data['message']);
 	//print_r($data['post_id']);
@@ -856,7 +854,6 @@ class closetopiccondition_handler
 		$sql_data[USERS_TABLE]['stat'][] = "user_lastpost_time = " . $data['post_time'] . (($this->auth->acl_get('f_postcount', $data['forum_id']) ) ? ', user_posts = user_posts + 1' : '');
 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_posts_approved = forum_posts_approved + 1';
 
-
 		//insert new post  into phpbb_posts
 		$sql = 'INSERT INTO ' . POSTS_TABLE . ' ' . $this->db->sql_build_array('INSERT', $sql_data[POSTS_TABLE]['sql']);
 		$this->db->sql_query($sql);
@@ -870,19 +867,19 @@ class closetopiccondition_handler
 			'topic_last_poster_colour'	=>$data['poster_color'],
 			'topic_last_post_subject'	=> (string) $data['topic_title'],
 		);
-		
+
 		// Update total post count and forum information
 		set_config_count('num_posts', 1, true);
 		//update relation tables
- 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_post_id = ' . $data['post_id'];
+		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_post_id = ' . $data['post_id'];
 		$sql_data[FORUMS_TABLE]['stat'][] = "forum_last_post_subject = '" . $this->db->sql_escape($data['topic_title']) . "'";
 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_post_time = ' . $current_time;
 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_poster_id = ' . (int) $data['poster_id'];
 		$sql_data[FORUMS_TABLE]['stat'][] = "forum_last_poster_name = '" . $this->db->sql_escape($data['post_username']). "'";
 		$sql_data[FORUMS_TABLE]['stat'][] = "forum_last_poster_colour = '" . $this->db->sql_escape($data['poster_color']) . "'";
- 		
+
 		unset($sql_data[POSTS_TABLE]['sql']);
-	  
+
 		// Update the topics table
 		if (isset($sql_data[TOPICS_TABLE]['sql']))
 		{
@@ -920,13 +917,13 @@ class closetopiccondition_handler
 		}
 		// Committing the transaction before updating search index
 		$this->db->sql_transaction('commit');
-		
+
 		//// Mark this topic as posted to
 		//markread('post', $data['forum_id'], $data['topic_id']);
 		//// Mark this topic as read
 		//// We do not use post_time here, this is intended (post_time can have a date in the past if editing a message)
 		//markread('topic', $data['forum_id'], $data['topic_id'], time());
-		
+
 	//if ($this->config['load_db_lastread'] && $this->user->data['is_registered'])
 	//{
 	//	$sql = 'SELECT mark_time
@@ -957,7 +954,7 @@ class closetopiccondition_handler
 	$params = $add_anchor = '';
 
 	$params .= '&amp;t=' . $data['topic_id'];
-	
+
 	//if ($post_visibility == ITEM_APPROVED ||
 	//	($this->auth->acl_get('m_softdelete', $data['forum_id']) && $post_visibility == ITEM_DELETED) ||
 	//	($auth->acl_get('m_approve', $data['forum_id']) && in_array($post_visibility, array(ITEM_UNAPPROVED, ITEM_REAPPROVE))))
@@ -988,11 +985,8 @@ class closetopiccondition_handler
 		$this->db->sql_query($sql);
 		return;
 
-
-
-
 //*************************************
-	
+
 }
 	private function get_moderators($forum_id)
 	{
@@ -1058,22 +1052,20 @@ class closetopiccondition_handler
 			$ids = array_unique($ids);
 		}
 		return $ids;
-		//return $sql1;
-		
-		
+
 	}
 	public  function close_topic( $topic_data)
 	{
-	   {
-		  //Lock topic and give error warning
-		  $sql = 'UPDATE ' . TOPICS_TABLE .
+		{
+			//Lock topic and give error warning
+			$sql = 'UPDATE ' . TOPICS_TABLE .
 				" SET topic_status = " . ITEM_LOCKED .
 				" WHERE topic_id = " . $topic_data['topic_id'];
-		  $this->db->sql_query($sql);
+			$this->db->sql_query($sql);
 
-		  add_log('mod', $topic_data['forum_id'], $topic_data['topic_id'], 'LOG_' . 'LOCK', $topic_data['topic_title']);
+			add_log('mod', $topic_data['forum_id'], $topic_data['topic_id'], 'LOG_' . 'LOCK', $topic_data['topic_title']);
 
 		}
-	}   
+	}
 
 }

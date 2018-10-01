@@ -168,7 +168,7 @@ class closetopic extends \phpbb\cron\task\base
 			$this->config->set('closetopic_debug_2', 'qwerty');
 					$this->close_topic($row);
 //					if ($forum['is_noty_send'])
-					if(false)
+					if (false)
 					{
 						if ($forum['topicposter_msg'])
 						{
@@ -215,7 +215,7 @@ class closetopic extends \phpbb\cron\task\base
 								'noty_options'   => $forum['moderator_options'],
 							);
 							$this->add_notification($notification_data, 'alg.closetopiccondition.notification.type.moder');
-							
+
 						}
 
 					}
@@ -296,12 +296,10 @@ class closetopic extends \phpbb\cron\task\base
 				//print_r('$redirect_url=' . $redirect_url);
 
 				return $data;
-				
-				
-				}	
+				}
 
 	 }
-	 private function submit_new_post(&$data)
+	private function submit_new_post(&$data)
 	{
 	//print_r($data['message']);
 	//print_r($data['post_id']);
@@ -352,7 +350,6 @@ class closetopic extends \phpbb\cron\task\base
 		$sql_data[USERS_TABLE]['stat'][] = "user_lastpost_time = " . $data['post_time'] . (($this->auth->acl_get('f_postcount', $data['forum_id']) ) ? ', user_posts = user_posts + 1' : '');
 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_posts_approved = forum_posts_approved + 1';
 
-
 		//insert new post  into phpbb_posts
 		$sql = 'INSERT INTO ' . POSTS_TABLE . ' ' . $this->db->sql_build_array('INSERT', $sql_data[POSTS_TABLE]['sql']);
 		$this->db->sql_query($sql);
@@ -370,7 +367,7 @@ class closetopic extends \phpbb\cron\task\base
 		// Update total post count and forum information
 		set_config_count('num_posts', 1, true);
 		//update relation tables
- 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_post_id = ' . $data['post_id'];
+		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_post_id = ' . $data['post_id'];
 		$sql_data[FORUMS_TABLE]['stat'][] = "forum_last_post_subject = '" . $this->db->sql_escape($data['topic_title']) . "'";
 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_post_time = ' . $current_time;
 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_poster_id = ' . (int) $data['poster_id'];
@@ -416,13 +413,13 @@ class closetopic extends \phpbb\cron\task\base
 		}
 		// Committing the transaction before updating search index
 		$this->db->sql_transaction('commit');
-		
+
 		//// Mark this topic as posted to
 		//markread('post', $data['forum_id'], $data['topic_id']);
 		//// Mark this topic as read
 		//// We do not use post_time here, this is intended (post_time can have a date in the past if editing a message)
 		//markread('topic', $data['forum_id'], $data['topic_id'], time());
-		
+
 	//if ($this->config['load_db_lastread'] && $this->user->data['is_registered'])
 	//{
 	//	$sql = 'SELECT mark_time
@@ -453,7 +450,7 @@ class closetopic extends \phpbb\cron\task\base
 	$params = $add_anchor = '';
 
 	$params .= '&amp;t=' . $data['topic_id'];
-	
+
 	//if ($post_visibility == ITEM_APPROVED ||
 	//	($this->auth->acl_get('m_softdelete', $data['forum_id']) && $post_visibility == ITEM_DELETED) ||
 	//	($auth->acl_get('m_approve', $data['forum_id']) && in_array($post_visibility, array(ITEM_UNAPPROVED, ITEM_REAPPROVE))))
@@ -485,7 +482,7 @@ class closetopic extends \phpbb\cron\task\base
 		return;
 
 //*************************************
-	
+
 }
 	private function get_moderators($forum_id)
 	{
@@ -557,7 +554,7 @@ class closetopic extends \phpbb\cron\task\base
 //		$this->notification_manager->add_notifications($notification_type_name, $notification_data);
 		//todo add record to log admin
 	}
-	public  function close_topic( $topic_data)
+	public  function close_topic($topic_data)
 	{
 	   {
 		  //Lock topic and give error warning

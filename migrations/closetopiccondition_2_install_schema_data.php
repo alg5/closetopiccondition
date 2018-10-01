@@ -43,18 +43,18 @@ class closetopiccondition_2_install_schema_data extends \phpbb\db\migration\migr
 							'is_noty_send' => array('TINT:1', '1'),
 							'noty_sender_id' => array('UINT:8', '0'),
 							'noty_sender_name' => array('VCHAR:255', ''),
- 							'topicposter_msg' => array('VCHAR:500', ''),
+							'topicposter_msg' => array('VCHAR:500', ''),
 							'topicposter_uid' => array('VCHAR:8', ''),
 							'topicposter_bitfield' => array('VCHAR:255', ''),
 							'topicposter_options' => array('UINT:11', 7),
- 							'moderator_msg' => array('VCHAR:500', ''),
+							'moderator_msg' => array('VCHAR:500', ''),
 							'moderator_uid' => array('VCHAR:8', ''),
 							'moderator_bitfield' => array('VCHAR:255', ''),
 							'moderator_options' => array('UINT:11', 7),
 					   ),
 						'PRIMARY_KEY'	=> array('forum_id'),
 					),
-			),			
+			),
 		);
 	}
 
@@ -64,8 +64,8 @@ class closetopiccondition_2_install_schema_data extends \phpbb\db\migration\migr
 		   // 'drop_tables'	=> array($this->table_prefix . 'closetopiccondition_options'),
 		);
 	}
-	
-		public function update_data()
+
+	public function update_data()
 	{
 		return array(
 			// Add configs

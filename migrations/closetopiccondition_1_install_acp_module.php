@@ -39,7 +39,7 @@ class closetopiccondition_1_install_acp_module extends \phpbb\db\migration\migra
 					'module_mode'		=> 'closetopiccondition_forum',
 					'module_auth'		=> 'ext_alg/closetopiccondition && acl_a_board',
 				))),
-			
+
 			array('module.add', array('acp', 'ACP_CLOSETOPICCONDITION', array(
 					'module_basename'	=> '\alg\closetopiccondition\acp\acp_closetopiccondition_common_module',
 					'module_langname'	=> 'ACP_CLOSETOPICCONDITION_COMMON_SETTINGS',
