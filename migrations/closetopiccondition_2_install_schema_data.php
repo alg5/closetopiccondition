@@ -61,7 +61,7 @@ class closetopiccondition_2_install_schema_data extends \phpbb\db\migration\migr
 	public function revert_schema()
 	{
 		return 	array(
-                                'drop_tables'	=> array($this->table_prefix . 'closetopiccondition_options'),
+			'drop_tables'	=> array($this->table_prefix . 'closetopiccondition_options'),
 		);
 	}
 

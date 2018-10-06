@@ -167,7 +167,7 @@ class closetopic extends \phpbb\cron\task\base
 					$this->close_topic($row);
 //					if ($forum['is_noty_send'])
 					if (false)
-					{
+{
 						if ($forum['topicposter_msg'])
 						{
 							//create noty for topicposter
@@ -249,7 +249,7 @@ class closetopic extends \phpbb\cron\task\base
 			$quote_status	= true;
 		   // if (!sizeof($this->error))
 			if (true)
-			{
+					{
 				$data = array(
 					//'topic_first_post_id'	=> (isset($post_data['topic_first_post_id'])) ? (int) $post_data['topic_first_post_id'] : 0,
 					//'topic_last_post_id'	=> (isset($post_data['topic_last_post_id'])) ? (int) $post_data['topic_last_post_id'] : 0,
@@ -303,7 +303,7 @@ class closetopic extends \phpbb\cron\task\base
 	//print_r($data['post_id']);
 	//print_r($data);
 
-		// Prepare new post data 
+		// Prepare new post data
 			$sql_data[POSTS_TABLE]['sql'] = array(
 				'forum_id'			=> $data['forum_id'],
 				'topic_id'			=> $data['topic_id'],
