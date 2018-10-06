@@ -83,19 +83,19 @@ class closetopiccondition_handler
 		$arr_res = $arr_priority1 = $arr_priority2 = array();
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-                                $pos = strpos(utf8_strtoupper($row['forum_name']), $q);
-                                if ($pos !== false )
-                                {
-                                        $row['pos'] = $pos;
-                                        if ($pos == 0)
-                                        {
-                                                $arr_priority1[] = $row;
-                                        }
-                                        else
-                                        {
-                                                $arr_priority2[] = $row;
-                                        }
-                                }
+								$pos = strpos(utf8_strtoupper($row['forum_name']), $q);
+								if ($pos !== false )
+								{
+										$row['pos'] = $pos;
+										if ($pos == 0)
+										{
+												$arr_priority1[] = $row;
+										}
+										else
+										{
+												$arr_priority2[] = $row;
+										}
+								}
 		}
 		$this->db->sql_freeresult($result);
 
@@ -103,57 +103,57 @@ class closetopiccondition_handler
 		$message = '';
 		foreach ($arr_res as $forum_info)
 		{
-                                $forum_id = $forum_info['forum_id'];
-                                $key = $forum_info['forum_name'] ;
-                                if ($forum_info['forum_parent_name'] )
-                                {
-                                        $key .= ' (' . $forum_info['forum_parent_name'] . ')'  ;
-                                }
-                                $message .=  $key . "|$forum_id\n";
+								$forum_id = $forum_info['forum_id'];
+								$key = $forum_info['forum_name'] ;
+								if ($forum_info['forum_parent_name'] )
+								{
+										$key .= ' (' . $forum_info['forum_parent_name'] . ')'  ;
+								}
+								$message .=  $key . "|$forum_id\n";
 		}
 		$json_response = new \phpbb\json_response;
 		$json_response->send($message);
 	}
 	public function live_search_user()
 	{
-                    $q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
+					$q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
 
-                    $sql = "SELECT user_id, username  FROM " . $this->users_table .
-                                            " WHERE user_type <> " . USER_IGNORE .
-                                            " AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
-                                            " ORDER BY username";
+					$sql = "SELECT user_id, username  FROM " . $this->users_table .
+											" WHERE user_type <> " . USER_IGNORE .
+											" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
+											" ORDER BY username";
 
-                    $result = $this->db->sql_query($sql);
-                    $message='';
-                    while ($row = $this->db->sql_fetchrow($result))
-                    {
-                            $user_id = $row['user_id'];
-                            $key = htmlspecialchars_decode($row['username']	);
-                            $message .=  $key . "|$user_id\n";
-                    }
-                    $json_response = new \phpbb\json_response;
-                    $json_response->send($message);
+					$result = $this->db->sql_query($sql);
+					$message='';
+					while ($row = $this->db->sql_fetchrow($result))
+					{
+							$user_id = $row['user_id'];
+							$key = htmlspecialchars_decode($row['username']	);
+							$message .=  $key . "|$user_id\n";
+					}
+					$json_response = new \phpbb\json_response;
+					$json_response->send($message);
 
 	}
 	public function live_search_group()
 	{
-                    $q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
+					$q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
 
-                    $sql = "SELECT group_id, group_name, group_type  FROM " . $this->groups_table .
-                                            " ORDER BY group_type DESC, group_name ASC";
-                    $result = $this->db->sql_query($sql);
-                    $message='';
-                    while ($row = $this->db->sql_fetchrow($result))
-                    {
-                            $key = $row['group_type'] == GROUP_SPECIAL ?  $this->user->lang['G_' . $row['group_name']] : htmlspecialchars_decode($row['group_name']	);
-                            if (strpos(utf8_strtoupper($key), $q) == 0)
-                            {
-                                    $group_id=$row['group_id'];
-                                    $message .= $key . "|$group_id\n";
-                            }
-                    }
-                    $json_response = new \phpbb\json_response;
-                    $json_response->send($message);
+					$sql = "SELECT group_id, group_name, group_type  FROM " . $this->groups_table .
+											" ORDER BY group_type DESC, group_name ASC";
+					$result = $this->db->sql_query($sql);
+					$message='';
+					while ($row = $this->db->sql_fetchrow($result))
+					{
+							$key = $row['group_type'] == GROUP_SPECIAL ?  $this->user->lang['G_' . $row['group_name']] : htmlspecialchars_decode($row['group_name']	);
+							if (strpos(utf8_strtoupper($key), $q) == 0)
+							{
+									$group_id=$row['group_id'];
+									$message .= $key . "|$group_id\n";
+							}
+					}
+					$json_response = new \phpbb\json_response;
+					$json_response->send($message);
 
 	}
 
@@ -207,7 +207,7 @@ class closetopiccondition_handler
 					$row['topicposter_msg'],
 					$row['topicposter_uid'],
 					$row['topicposter_options']
-				); 
+				);
 				$user_message = $ret['text'];
 				$ret = generate_text_for_edit(
 					$row['moderator_msg'],
@@ -567,7 +567,7 @@ class closetopiccondition_handler
 
 				return $data;
 
-				}	
+			}
 
 	}
 	private function submit_new_post(&$data)
@@ -576,7 +576,7 @@ class closetopiccondition_handler
 	//print_r($data['post_id']);
 	//print_r($data);
 
-		// Prepare new post data 
+		// Prepare new post data
 			$sql_data[POSTS_TABLE]['sql'] = array(
 				'forum_id'			=> $data['forum_id'],
 				'topic_id'			=> $data['topic_id'],
@@ -821,7 +821,7 @@ class closetopiccondition_handler
 		return $ids;
 
 	}
-	public  function close_topic( $topic_data)
+	public  function close_topic($topic_data)
 	{
 		{
 			//Lock topic and give error warning
