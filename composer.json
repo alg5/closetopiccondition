@@ -1,19 +1,20 @@
 {
     "name": "alg/closetopiccondition",
     "type": "phpbb-extension",
-    "homepage": "chugunok.net",
+    "homepage": "https://github.com/alg5/closetopiccondition",
     "version": "1.0.0",
-    "time": "2017-02-10",
-    "license": "GPL-2.0",
+    "time": "2018-10-06",
+    "createtime": "2014-09-29",
+    "license": "GPL-2.0-only",
     "authors": [
         {
             "name": "alg",
-            "homepage": "chugunok.net",
+            "homepage": "https://github.com/alg5/closetopiccondition",
             "role": "author"
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.4.0"
     },
     "require-dev": {
       "phpbb/epv": "dev-master"
@@ -21,7 +22,12 @@
     "extra": {
         "display-name": "Close Topic By Conditions",
         "soft-require": {
-            "phpbb/phpbb": "3.1.*@dev"
+            "phpbb/phpbb": ">=3.2.0"
+        },
+        "version-check": {
+            "host": "alg5.github.io",
+            "directory": "/closetopiccondition",
+            "filename": "version.json"
         }
     }
 }

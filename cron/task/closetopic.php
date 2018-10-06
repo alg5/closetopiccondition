@@ -32,14 +32,12 @@ class closetopic extends \phpbb\cron\task\base
 	*
 	* @param \phpbb\config\config $config Config object
 	*/
-	//public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\user $user, \phpbb\notification\manager $notification_manager, $phpbb_root_path, $php_ext, $closetopiccondition_options_table)
 	public function __construct(\phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\user $user, $phpbb_root_path, $php_ext, $closetopiccondition_options_table)
 	{
 		$this->config = $config;
 		$this->db = $db;
 		$this->auth = $auth;
 		$this->user = $user;
-//		$this->notification_manager = $notification_manager;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 		$this->closetopiccondition_options_table = $closetopiccondition_options_table;

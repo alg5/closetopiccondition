@@ -1,13 +1,6 @@
 imports:
     - { resource: tables.yml }
 services:
-    alg.closetopiccondition.listener:
-        class: alg\closetopiccondition\event\listener
-        arguments:
-            - '@controller.helper'
-            - '@template'
-        tags:
-            - { name: event.listener }
     alg.closetopiccondition.closetopiccondition_handler:
         class: alg\closetopiccondition\controller\closetopiccondition_handler
         arguments:
@@ -19,8 +12,6 @@ services:
             - %core.php_ext%
             - @request
             - @controller.helper
-            - @service_container
-            - @content.visibility
             - @config
             - %tables.users%
             - %tables.groups%

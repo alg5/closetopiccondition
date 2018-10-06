@@ -146,7 +146,7 @@
         $("#btnSavePeriod").on('click', function (e) {
             e.preventDefault();
             //alert('1111');
-           // $("#btnSavePeriod").hide();   //debug
+            $("#btnSavePeriod").hide();   //debug
             $("#loader_save").css('display', 'inline-block');
 
             var path = U_CLOSETOPICCONDITION_PATH_PERIOD;

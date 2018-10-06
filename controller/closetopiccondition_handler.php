@@ -53,7 +53,7 @@ class closetopiccondition_handler
 	* @access public
 	*/
 
-	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\user $user, \phpbb\user_loader $user_loader, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, \phpbb\controller\helper $controller_helper, $phpbb_container, \phpbb\content_visibility $content_visibility, \phpbb\config\config $config, $users_table, $groups_table, $closetopiccondition_options_table)
+	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\user $user, \phpbb\user_loader $user_loader, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, \phpbb\controller\helper $controller_helper, \phpbb\config\config $config, $users_table, $groups_table, $closetopiccondition_options_table)
 	{
 		$this->db = $db;
 		$this->auth = $auth;
@@ -62,14 +62,10 @@ class closetopiccondition_handler
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 		$this->request = $request;
-//		$this->notification_manager = $notification_manager;
 		$this->controller_helper = $controller_helper;
-		$this->phpbb_container = $phpbb_container;
-		$this->content_visibility = $content_visibility;
 		$this->config = $config;
 		$this->users_table = $users_table;
 		$this->groups_table = $groups_table;
-//		$this->notifications_table = $notifications_table;
 		$this->closetopiccondition_options_table = $closetopiccondition_options_table;
 
 		$this->return = array(); // save returned data in here
@@ -78,8 +74,6 @@ class closetopiccondition_handler
 
 	public function live_search_forum()
 	{
-		//$phpbb_content_visibility = $phpbb_container->get('content.visibility');
-		//$topic_visibility = $this->content_visibility->get_visibility_sql('topic', $forum_id, 't.');
 		$q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
 		$sql = "SELECT  f.forum_id, f.forum_name, pf.forum_name as forum_parent_name  " .
 				" FROM " . FORUMS_TABLE . " f LEFT JOIN " . FORUMS_TABLE . " pf on f.parent_id = pf.forum_id " .
@@ -89,22 +83,19 @@ class closetopiccondition_handler
 		$arr_res = $arr_priority1 = $arr_priority2 = array();
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-			//if ($this->auth->acl_get('f_read', $row['forum_id']) )
-			{
-				$pos = strpos(utf8_strtoupper($row['forum_name']), $q);
-				if ($pos !== false )
-				{
-					$row['pos'] = $pos;
-					if ($pos == 0)
-					{
-						$arr_priority1[] = $row;
-					}
-					else
-					{
-						$arr_priority2[] = $row;
-					}
-				}
-			}
+                                $pos = strpos(utf8_strtoupper($row['forum_name']), $q);
+                                if ($pos !== false )
+                                {
+                                        $row['pos'] = $pos;
+                                        if ($pos == 0)
+                                        {
+                                                $arr_priority1[] = $row;
+                                        }
+                                        else
+                                        {
+                                                $arr_priority2[] = $row;
+                                        }
+                                }
 		}
 		$this->db->sql_freeresult($result);
 
@@ -112,57 +103,57 @@ class closetopiccondition_handler
 		$message = '';
 		foreach ($arr_res as $forum_info)
 		{
-			$forum_id = $forum_info['forum_id'];
-			$key = $forum_info['forum_name'] ;
-			if ($forum_info['forum_parent_name'] )
-			{
-				$key .= ' (' . $forum_info['forum_parent_name'] . ')'  ;
-			}
-			$message .=  $key . "|$forum_id\n";
-		}
-		$json_response = new \phpbb\json_response;
-			$json_response->send($message);
-	}
-	public function live_search_user()
-	{
-		$q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
-
-		$sql = "SELECT user_id, username  FROM " . $this->users_table .
-					" WHERE user_type <> " . USER_IGNORE .
-					" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
-					" ORDER BY username";
-
-		$result = $this->db->sql_query($sql);
-		$message='';
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$user_id = $row['user_id'];
-			$key = htmlspecialchars_decode($row['username']	);
-			$message .=  $key . "|$user_id\n";
+                                $forum_id = $forum_info['forum_id'];
+                                $key = $forum_info['forum_name'] ;
+                                if ($forum_info['forum_parent_name'] )
+                                {
+                                        $key .= ' (' . $forum_info['forum_parent_name'] . ')'  ;
+                                }
+                                $message .=  $key . "|$forum_id\n";
 		}
 		$json_response = new \phpbb\json_response;
 		$json_response->send($message);
+	}
+	public function live_search_user()
+	{
+                    $q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
+
+                    $sql = "SELECT user_id, username  FROM " . $this->users_table .
+                                            " WHERE user_type <> " . USER_IGNORE .
+                                            " AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
+                                            " ORDER BY username";
+
+                    $result = $this->db->sql_query($sql);
+                    $message='';
+                    while ($row = $this->db->sql_fetchrow($result))
+                    {
+                            $user_id = $row['user_id'];
+                            $key = htmlspecialchars_decode($row['username']	);
+                            $message .=  $key . "|$user_id\n";
+                    }
+                    $json_response = new \phpbb\json_response;
+                    $json_response->send($message);
 
 	}
 	public function live_search_group()
 	{
-		$q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
+                    $q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
 
-		$sql = "SELECT group_id, group_name, group_type  FROM " . $this->groups_table .
-					" ORDER BY group_type DESC, group_name ASC";
-		$result = $this->db->sql_query($sql);
-		$message='';
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$key = $row['group_type'] == GROUP_SPECIAL ?  $this->user->lang['G_' . $row['group_name']] : htmlspecialchars_decode($row['group_name']	);
-			if (strpos(utf8_strtoupper($key), $q) == 0)
-			{
-				$group_id=$row['group_id'];
-				$message .= $key . "|$group_id\n";
-			}
-		}
-		$json_response = new \phpbb\json_response;
-		$json_response->send($message);
+                    $sql = "SELECT group_id, group_name, group_type  FROM " . $this->groups_table .
+                                            " ORDER BY group_type DESC, group_name ASC";
+                    $result = $this->db->sql_query($sql);
+                    $message='';
+                    while ($row = $this->db->sql_fetchrow($result))
+                    {
+                            $key = $row['group_type'] == GROUP_SPECIAL ?  $this->user->lang['G_' . $row['group_name']] : htmlspecialchars_decode($row['group_name']	);
+                            if (strpos(utf8_strtoupper($key), $q) == 0)
+                            {
+                                    $group_id=$row['group_id'];
+                                    $message .= $key . "|$group_id\n";
+                            }
+                    }
+                    $json_response = new \phpbb\json_response;
+                    $json_response->send($message);
 
 	}
 
@@ -349,16 +340,7 @@ class closetopiccondition_handler
 				$noty_sender_id = $user_id_ary[0];
 			}
 		}
-		//*****add/update db*****
 
-		//$noty_parse_type = $this->request->variable('noty_parse_type', limitpostsintopic_handler::PARSE_AS_HTML);
-		//$noty_title = utf8_normalize_nfc($this->request->variable('noty_title', '',true));
-		//$noty_content =  utf8_normalize_nfc($this->request->variable('noty_content', '',true));
-		//if ($noty_parse_type == limitpostsintopic_handler::PARSE_AS_HTML)
-		//{
-		//	$noty_content = htmlspecialchars_decode($noty_content);
-		//}
-		//$noty_create_time = time();
 		$save_data = array(
 			'forum_id'	=> $forum_id,
 			'limitposts_number'	=>$limitposts_number,
@@ -419,233 +401,18 @@ class closetopiccondition_handler
 	public function update_period()
 	{
 		$this->user->add_lang_ext('alg/closetopiccondition', 'info_acp_closetopiccondition');
-		$limitposts_period = (int) $this->request->variable('limitposts_period', 1);
-		$this->config->set('closetopiccondition_period', $limitposts_period);
-		$this->config->set('closetopic_gc', 60*60*24 / $limitposts_period);
+		$closetopiccondition_period = (int) $this->request->variable('closetopiccondition_period', 1);
+		$this->config->set('closetopiccondition_period', $closetopiccondition_period);
+		$this->config->set('closetopic_gc', 60*60*24 / $closetopiccondition_period);
 
-		//debug crone
-/*
-		$sql = "SELECT  lp.*, f.forum_name, f.forum_type, f.forum_status  FROM " . $this->closetopiccondition_options_table .
-					" lp JOIN " . FORUMS_TABLE . " f on lp.forum_id=f.forum_id" .
-					" WHERE f.forum_type=" . FORUM_POST . " AND f.forum_status <> " . ITEM_LOCKED;
-		$result = $this->db->sql_query($sql);
-		$forums_arr = array();
-		$topics = array();
-		$data = array();
-		$limittime_period = 0;
-		$sql1='';
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$forums_arr[] = $row;
-		}
-		$this->db->sql_freeresult($result);
-
-		foreach ($forums_arr as $forum)
-		{
-			$forum_id = (int) $forum['forum_id'];
-			$limitposts_number = (int) $forum['limitposts_number'];
-			$limittime_period = (int) $forum['limittime_period'];
-			$close_only_normal_topics = (int) $forum['close_only_normal_topics'];
-			$close_by_each_condition = (int) $forum['close_by_each_condition'];
-			$sql = "SELECT * FROM " . TOPICS_TABLE .
-						" WHERE forum_id=" . $forum_id .
-						" AND topic_status <> " . ITEM_LOCKED;
-			if ( $limitposts_number > 0 && $limittime_period > 0)
-			{
-				$sub_months = '-' . $limittime_period . ' months';
-				if ($close_by_each_condition > 0 )
-				{
-					$sql .= " AND (topic_posts_approved >= " . $limitposts_number . " OR topic_last_post_time < " . strtotime($row['topic_last_post_time'] . $sub_months) . ")";
-				}
-				else
-				{
-					$sql .= " AND (topic_posts_approved >= " . $limitposts_number . " AND topic_last_post_time < " . strtotime($row['topic_last_post_time'] . $sub_months) . ")";
-				}
-			}
-			else
-			{
-				if ($limitposts_number > 0)
-				{
-					$sql .= " AND topic_posts_approved >= " . $limitposts_number;
-				}
-				if ($limittime_period > 0)
-				{
-					$sub_months = '-' . $limittime_period . ' months';
-					//$ddate1 = strtotime($row['topic_last_post_time'] . $sub_months);
-					$sql .= " AND topic_last_post_time < " . strtotime($row['topic_last_post_time'] . $sub_months);
-				}
-			}
-			if ($close_only_normal_topics > 0)
-			{
-				$sql .= " AND topic_type = " . POST_NORMAL;
-			}
-
-			$result = $this->db->sql_query($sql);
-
-				while ($row = $this->db->sql_fetchrow($result))
-				{
-					$topics[] = $row;
-					$post_id = $row['topic_last_post_id'];
-					if ($forum['is_last_post'] && $forum['lastposter_id'] && $forum['lastpost_msg'])
-					{
-						//create last post
-						$topic_id = $row['topic_id'];
-						$this->last_post_replay($forum, $row, $data);
-						$post_id = $data['post_id'];
-						$msg = $forum['lastpost_msg'];
-						$msg1 = $msg;
-						$msgtest = "qwerty %2s 12345";
-						$msg4 = str_replace ('%1s', $row['topic_title'], $msgtest);
-						$msg5 = str_replace ('%2s', $forum['lastposter_name'], $msgtest);
-						$ava = $this->user_loader->get_avatar( 18534, 'username');
-						$topic_last_post_time = $row['topic_last_post_time'];
-					}
-					$this->close_topic($row);
-					if ($forum['is_noty_send'])
-					{
-						if ($forum['topicposter_msg'])
-						{
-							//create noty for topicposter
-							$ids = array();
-							$ids[] = $row['topic_poster'];
-							$notification_data = array(
-							   // 'id'   => $row['topic_id'],
-								'item_id'   => $post_id,
-								'post_id'   => $post_id,
-								'topic_id'   => $row['topic_id'],
-								'forum_id'   => $row['forum_id'],
-								'poster_id'   => $row['topic_poster'],
-								'members_ids'   => $ids,
-								'from'   => $forum['noty_sender_id'] ,
-								//'from'   => 18534 ,
-								'noty_title'   => sprintf( $this->user->lang['NOTIFICATION_TYPE_TOPICPOSTER'], $row['topic_title']),
-								'noty_content'   => $forum['topicposter_msg'],
-								'noty_uid'   => $forum['topicposter_uid'],
-								'noty_bitfield'   => $forum['topicposter_bitfield'],
-								'noty_options'   => $forum['topicposter_options'],
-							);
-
-							$this->add_notification($notification_data);
-					   }
-						if ($forum['moderator_msg'])
-						{
-							$moderators = $this->get_moderators($row['forum_id']);
-							include_once($this->phpbb_root_path .  'includes/functions_display.' . $this->php_ext);
-							$notification_data = array(
-							   // 'id'   => $row['topic_id'],
-								'item_id'   => $post_id,
-								'post_id'   => $post_id,
-								'topic_id'   => $row['topic_id'],
-								'forum_id'   => $row['forum_id'],
-								'poster_id'   => $row['topic_poster'],
-								'members_ids'   => $moderators,
-								'from'   => $forum['noty_sender_id'] ,
-								//'from'   => 18534 ,
-								'noty_title'   => sprintf( $this->user->lang['NOTIFICATION_TYPE_TOPICPOSTER'], $row['topic_title']),
-								'noty_content'   => $forum['moderator_msg'],
-								'noty_uid'   => $forum['moderator_uid'],
-								'noty_bitfield'   => $forum['moderator_bitfield'],
-								'noty_options'   => $forum['moderator_options'],
-							);
-							$this->add_notification($notification_data, 'alg.closetopiccondition.notification.type.moder');
-
-						}
-
-					}
-				}
-				//add_log('mod', $post_data['forum_id'], $post_data['topic_id'], 'LOG_' . 'LOCK', $post_data['topic_title']);
-			//}//end $limitposts_number
-			$sql1='';
-			//if($forum_id == 21)
-			{
-				$sql1 = $sql;
-			}
-
-		}
-
-		//end debug crone
-*/
-		//$sub_months = '-' . $limittime_period . ' months';
-		//$ddate1 = strtotime($row['topic_last_post_time'] . $sub_months);
-		//$ddate = strtotime($row['topic_last_post_time'] .' -12 months');
 		$this->return = array(
 			'MESSAGE'		=> $this->user->lang['ACP_CLOSETOPICCONDITION_PERIOD_SAVED'] ,
-			//'forums_arr'		=>$forums_arr ,
-			//'$$topic_last_post_time'		=>$topic_last_post_time ,
-			//'$ddate'		=>$ddate ,
-		   // '$ddate1'		=>$ddate1 ,
-			//'topics'		=>$topics ,
-			'LIMITPOSTS_PERIOD'		=>$limitposts_period ,
-			//'redirect_url'		=>$redirect_url ,
-			//'message'		=>$msg ,
-			//'message1'		=>$msg1 ,
-			////'$msg2'		=>$msg2 ,
-			////'$$msg3'		=>$msg3 ,
-			//'$$$msg4'		=>$msg4 ,
-			//'ava'		=>$ava ,
-			//'$forum'		=>$forum ,
-		   // 'data'		=>$data ,
-			//'$notification_data'		=>$notification_data ,
-			//'$$moderators'		=>$moderators ,
+			'LIMITPOSTS_PERIOD'		=>$closetopiccondition_period ,
 		);
 		$json_response = new \phpbb\json_response;
 		$json_response->send($this->return);
 
 	}
-	#region Notifications
-	// Add notifications
-	public function add_notification($notification_data, $notification_type_name = 'alg.closetopiccondition.notification.type.topicposter')
-	{
-										// print_r($notification_data);
-
-//		$this->notification_manager->add_notifications($notification_type_name, $notification_data);
-		//todo add record to log admin
-	}
-
-	public function notification_exists($notification_data, $notification_type_name)
-	{
-//		$notification_type_id = $this->notification_manager->get_notification_type_id($notification_type_name);
-//	   $sql = 'SELECT notification_id FROM ' . $this->notifications_table . '
-//		   WHERE notification_type_id = ' . (int) $notification_type_id . '
-//				AND item_id = ' . (int) $commandgame_data['action_id'];
-//		$result = $this->db->sql_query($sql);
-//		$item_id = $this->db->sql_fetchfield('notification_id');
-//	   $this->db->sql_freeresult($result);
-//
-//		return ($item_id) ?: false;
-		return false;
-	}
-//	public function get_item_id_notification($notification_type_name = 'alg.closetopiccondition.notification.type.topicposter')
-//	{
-//		$notification_type_id = $this->notification_manager->get_notification_type_id($notification_type_name);
-//		$sql = 'SELECT  max(item_id) as max_item_id FROM ' . $this->notifications_table . '
-//			WHERE notification_type_id = ' . (int) $notification_type_id ;
-//			$result = $this->db->sql_query($sql);
-//		$item_id = (int) $this->db->sql_fetchfield('max_item_id');
-//		$this->db->sql_freeresult($result);
-//		if (!$item_id)
-//		{
-//			return 1;
-//		}
-//		return (int) $item_id + 1;
-//	}
-//
-//	public function notification_markread($item_ids)
-//	{
-//		// Mark post notifications read for this user in this topic
-//		$this->notification_manager->mark_notifications_read(array(
-//			'alg.closetopiccondition.notification.type.notification_manager ',
-//		), $item_ids, $this->user->data['user_id']);
-//
-//	// Mark post notifications read for this user in this topic
-//			$this->notification_manager->mark_notifications_read(array(
-//					'alg.closetopiccondition.notification.type.moder',
-//					'alg.closetopiccondition.notification.type.topicposter',
-//			), $item_ids, $this->user->data['user_id']);
-//	}
-
-	#endregion
-
 	private function get_user_ids_by_groups_ary(&$user_id_ary, $group_id_ary)
 	{
 
