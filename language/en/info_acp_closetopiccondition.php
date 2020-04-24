@@ -35,23 +35,23 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 
-	'ACP_CLOSETOPICCONDITION'						=> 'Limiting the number of posts in the topic',
-	'ACP_CLOSETOPICCONDITION'						=> 'Close topic by condition',
-	'ACP_CLOSETOPICCONDITION_FORUM'						=> 'Set forum closing conditions',
-	'ACP_CLOSETOPICCONDITION_SETTINGS'				=> 'Forum setting',
-	'ACP_CLOSETOPICCONDITION_COMMON_SETTINGS'				=> 'Common setting',
-	'ACP_CLOSETOPICCONDITION_YES'				=> 'Set the conditions for closing topics ',
-	'ACP_CLOSETOPICCONDITION_NO'				=> 'Do not set the conditions for closing topics ',
-	'ACP_CLOSEALLTOPICS_YES'				=> 'Close all topics ',
-	'ACP_CLOSEALLTOPICS_NO'				=> 'Close only regular (non-stuck) topics. ',
+	'ACP_CLOSETOPICCONDITION'						=> 'Ограничение числа постов в теме',
+	'ACP_CLOSETOPICCONDITION'						=> 'Закрытие темы по условию',
+	'ACP_CLOSETOPICCONDITION_FORUM'						=> 'Задать условия закрытия темы для форума',
+	'ACP_CLOSETOPICCONDITION_SETTINGS'				=> 'Настройки форумные',
+	'ACP_CLOSETOPICCONDITION_COMMON_SETTINGS'				=> 'Настройки общие',
+	'ACP_CLOSETOPICCONDITION_YES'				=> 'Установить условия закрытия тем ',
+	'ACP_CLOSETOPICCONDITION_NO'				=> 'Не устанавливать условия закрытия тем ',
+	'ACP_CLOSEALLTOPICS_YES'				=> 'Закрывать все темы ',
+	'ACP_CLOSEALLTOPICS_NO'				=> 'Закрывать только обычные(неприлепленные) темы ',
 	'ACP_CLOSEALLTOPICS_NO_EXPLANE'				=> 'По умолчанию закрываются по условию только обычные темы, Выберите опцию "закрыть все темы",  для закрытия также прилепленных тем, важных тем и объявлений ',
 	'ACP_CLOSE_BY_SOME_CONDITION'				=> 'Закрывать темы при выборе нескольких условий ',
 	'ACP_CLOSE_BY_SOME_CONDITION_EXPLANE'				=> 'По умолчанию закрываются темы при наличии любого из условий. Выберите вторую опцию  для закрытия тем только в случае наступления всех выбранных условий ',
 	'ACP_CLOSE_BY_EACH_CONDITION'				=> 'Закрывать при наличии любого из выбранных условий ',
 	'ACP_CLOSE_BY_ALL_CONDITION'				=> 'Закрывать при наличии всех выбранных условий ',
 
-	'ACP_CLOSETOPICCONDITION_OPTION'				=> 'Ограничить число постов в форуме ',
-	'ACP_CLOSETOPICCONDITION_OPTION_EXPLAIN'				=> 'По наступлению любого из заданных условий форум будет закрыт задачей-кроном',
+    'ACP_CLOSETOPICCONDITION_OPTION'				=> 'Ограничить число постов в форуме ',
+ 	'ACP_CLOSETOPICCONDITION_OPTION_EXPLAIN'				=> 'По наступлению любого из заданных условий форум будет закрыт задачей-кроном',
 	'ACP_CLOSETOPICCONDITION_LIMIT_POSTS'				=> 'Закрыть тему после достижения заданного количества постов ',
 	'ACP_CLOSETOPICCONDITION_INACTIVE_PERIOD_CONDITION'				=> 'Закрыть тему после отсутствия активности в течение заданного периода ',
 	'ACP_CLOSETOPICCONDITION_SELECT'				=> 'Выберите форум',
@@ -101,11 +101,11 @@ $lang = array_merge($lang, array(
 	'ACP_CLOSETOPICCONDITION_GENERAL_TOPICS'				=> 'закрывать только обычные темы',
 	'ACP_CLOSETOPICCONDITION_ALL_TOPICS'				=> 'закрывать все темы',
 
-	'NOTIFICATION_TOPICPOSTER'				=> 'Тема %s закрыта',
+    'NOTIFICATION_TOPICPOSTER'				=> 'Тема %s закрыта',
 	'NOTIFICATION_TOPICPOSTER'				=> 'Тема закрыта',
 	'NOTIFICATION_MODER'				=> 'Тема закрыта',
-	'CLOSETOPICCONDITION_NOTIFICATION_REFERENCE'			=> '«%1$s»',
+ 	'CLOSETOPICCONDITION_NOTIFICATION_REFERENCE'			=> '«%1$s»',
 	'NOTIFICATION_TYPE_TOPICPOSTER'				=> 'Увеломление автора о закрытии темы по лимиту постов',
 	'NOTIFICATION_TYPE_MODER'				=> 'Увеломление модератора о закрытии темы по лимиту постов',
-
+   
 ));

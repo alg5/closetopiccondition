@@ -4,7 +4,6 @@
             NotExists:0,
             Exists:1
         }
-        //Init();
         function Init()
         {
             //changeVisible($('#forum_type_limitpostsintopic'), 'blockOptions');
@@ -59,7 +58,7 @@
                 },
                 onItemSelect: function (item) {
                     //goto_user(item);
-                    console.log(item);
+//                    console.log(item);
                 },
     
             });
@@ -77,7 +76,7 @@
                 },
                 onItemSelect: function (item) {
                     //goto_user(item);
-                    console.log(item);
+//                    console.log(item);
                 },
     
             });
@@ -89,16 +88,11 @@
                     changeVisible(this, 'blockOptions');
                 });
         $("#limitposts_number").on('change', function () {
-        //alert('123');
-                   // changeVisible(this, 'blockOptions');
-            changeEnableByLimitPostsNumber(this, "blockCloseTopicOptions");
+             changeEnableByLimitPostsNumber(this, "blockCloseTopicOptions");
         });
         $("input[name=chkConditions").on('change', function () {
-        //alert('123');
-            var selectedValue = $(this).val();
-            //console.log('selectedValue = ' + selectedValue);
-            //changeEnableByCondition("blockCloseTopicOptions", selectedValue);
-            if(parseInt(selectedValue) == 0)
+             var selectedValue = $(this).val();
+           if(parseInt(selectedValue) == 0)
                 $("#blockCloseTopicOptions").hide();
             else
                 $("#blockCloseTopicOptions").show();
@@ -115,20 +109,19 @@
         $("#chkLastPost").on('change', function () {
              changeEnable(this, "blockLastPost");
         });
-        $("#chkNotySend").on('change', function () {
-             changeEnable(this, "blockNotySend");
-        });
+//        $("#chkNotySend").on('change', function () {
+//             changeEnable(this, "blockNotySend");
+//        });
         $("#btnSend").on('click', function (e) {
             e.preventDefault();
             //$("#btnSend").hide(); //debug
             $("#loader_save").css('display', 'inline-block');
 
             var limitposts_number = $("#limitposts_number").val();
-            //var path = parseInt(limitposts_number) == 0 ? U_CLOSETOPICCONDITION_PATH_DELETE : U_CLOSETOPICCONDITION_PATH_SAVE;
             var path = U_CLOSETOPICCONDITION_PATH_SAVE;
            data_to_send = $("#acp_closetopiccondition").serialize();
            //alert(data_to_send);
-           console.log(data_to_send);
+//           console.log(data_to_send);
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
@@ -145,13 +138,11 @@
         });
         $("#btnSavePeriod").on('click', function (e) {
             e.preventDefault();
-            //alert('1111');
-            $("#btnSavePeriod").hide();   //debug
             $("#loader_save").css('display', 'inline-block');
 
             var path = U_CLOSETOPICCONDITION_PATH_PERIOD;
            data_to_send = $("#acp_closetopiccondition_common").serialize();
-           console.log(data_to_send);
+//           console.log(data_to_send);
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
@@ -159,9 +150,7 @@
                 url: path,
                 success: function (data) {
                     //alert('success');
-                    console.log(data);
-                    //$("input[name=chkConditions][value=" + data.IS_CONDITIONS_EXISTS + "]").prop('checked', true);
-                    $("#closetopiccondition_period").find("option[value='" + data.LIMITPOSTS_PERIOD + "']").attr("selected","selected");
+                      $("#closetopiccondition_period").find("option[value='" + data.LIMITPOSTS_PERIOD + "']").attr("selected","selected");
 
                     $("#btnSavePeriod").show();
                     $("#loader_save").hide();
@@ -170,86 +159,52 @@
             });
         });
 
-
-
-
-        //        $("#group_edit").on("click", function () {
-        //            $("#blockGroups").show();
-        //        });
-
-        //        $("#groups").on("click", function () {
-        //            $("#groupapproval_name").val($(this).find("option:selected").text());
-        //            $("#hGroupId").val($(this).find("option:selected").val());
-        //        });
-
         function get_forum_options(data)
         {
-    console.log(data);
-           $("#blockCloseTopic").show();
-            $("#submit_select_forum").show();
-            $("#loader_get").hide();
-            
-            if(parseInt(data.IS_CONDITIONS_EXISTS) == 0)
-                $("#blockCloseTopicOptions").hide();
-            else
-                $("#blockCloseTopicOptions").show();
-            $("input[name=chkConditions][value=" + data.IS_CONDITIONS_EXISTS + "]").prop('checked', true);
-            //$("h2").text(data.FORUM_NAME);
-            $("#spForumName").text(data.FORUM_NAME);
+		console.log(data);
+		$("#blockCloseTopic").show();
+		 $("#submit_select_forum").show();
+		 $("#loader_get").hide();
 
-            $("#chkBlockLimitPost").prop('checked', parseInt(data.LIMITPOSTS_NUMBER )> 0);
-            changeEnable($("#chkBlockLimitPost"), "blockLimitPost");
-            $("#limitposts_number").val(data.LIMITPOSTS_NUMBER);
+		 if(parseInt(data.IS_CONDITIONS_EXISTS) == 0)
+			 $("#blockCloseTopicOptions").hide();
+		 else
+			 $("#blockCloseTopicOptions").show();
+		$("input[name=chkConditions][value=" + data.IS_CONDITIONS_EXISTS + "]").prop('checked', true);
+		$("#spForumName").text(data.FORUM_NAME);
 
+		$("#chkBlockLimitPost").prop('checked', parseInt(data.LIMITPOSTS_NUMBER )> 0);
+		changeEnable($("#chkBlockLimitPost"), "blockLimitPost");
+		$("#limitposts_number").val(data.LIMITPOSTS_NUMBER);
 
-            $("#chkBlockTopicPeriodInactive").prop('checked', parseInt(data.LIMITTIME_PERIOD )> 0);
-            changeEnable($("#chkBlockTopicPeriodInactive"), "blockTopicPeriodInactive");
-            $("#limittime_period").val(data.LIMITTIME_PERIOD);
+		$("#chkBlockTopicPeriodInactive").prop('checked', parseInt(data.LIMITTIME_PERIOD )> 0);
+		changeEnable($("#chkBlockTopicPeriodInactive"), "blockTopicPeriodInactive");
+		$("#limittime_period").val(data.LIMITTIME_PERIOD);
 
-            $("input[name=chkCloseOnlyNormalTopics][value=" + data.CLOSE_ONLY_NORMAL_TOPICS + "]").prop('checked', true);
-            $("input[name=chkCloseByEachCondition][value=" + data.CLOSE_BY_EACH_CONDITION + "]").prop('checked', true);
-            $("#usersearch").val(data.LASTPOSTER_NAME);
-            $("#chkLastPost").prop('checked', data.IS_LAST_POST);
-            $("#txtLastPost").html(data.LAST_MESSAGE );
+		$("input[name=chkCloseOnlyNormalTopics][value=" + data.CLOSE_ONLY_NORMAL_TOPICS + "]").prop('checked', true);
+		$("input[name=chkCloseByEachCondition][value=" + data.CLOSE_BY_EACH_CONDITION + "]").prop('checked', true);
+		$("#usersearch").val(data.LASTPOSTER_NAME);
+		$("#chkLastPost").prop('checked', data.IS_LAST_POST);
+		$("#txtLastPost").html(data.LAST_MESSAGE );
 
-             $("#chkNotySend").prop('checked', data.IS_NOTY_SEND);
-            $("#txtTopicPoster").val(data.TOPICPOSTER_MESSAGE);
-            $("#txtModerators").val(data.MODERATOR_MESSAGE);
-            //changeEnableByCondition("blockCloseTopicOptions", data.IS_CONDITIONS_EXISTS);
-            $("#sender_search").val(data.NOTY_SENDER_NAME);
+		$("#chkNotySend").prop('checked', data.IS_NOTY_SEND);
+		$("#txtTopicPoster").val(data.TOPICPOSTER_MESSAGE);
+		$("#txtModerators").val(data.MODERATOR_MESSAGE);
+		$("#sender_search").val(data.NOTY_SENDER_NAME);
 
-            
-            $("#chkBlockTopicPeriodInactive").prop('checked', parseInt(data.LIMITTIME_PERIOD )> 0);
-            changeEnable($("#chkBlockTopicPeriodInactive"), "blockTopicPeriodInactive");
-
-           // changeEnable($("#chkConditionsExists"), "blockCloseTopicOptions");
-          // if(parseInt(data.LIMITPOSTS_NUMBER )> 0)
-            {
-                 changeEnable($("#chkLastPost"), "blockLastPost");
-                changeEnable($("#chkNotySend"), "blockNotySend");
-
-                //                alert('11');
-
-                //$("#blockLimitPostsOptions").hide();
-                //return;
-
-            }
+		$("#chkBlockTopicPeriodInactive").prop('checked', parseInt(data.LIMITTIME_PERIOD )> 0);
+		changeEnable($("#chkBlockTopicPeriodInactive"), "blockTopicPeriodInactive");
+		changeEnable($("#chkLastPost"), "blockLastPost");
+		changeEnable($("#chkNotySend"), "blockNotySend");
         }
 
         function changeVisible(el, idDiv) {
             var div = $('#' + idDiv);
-            //console.log(el);
-            //console.log(div);
             if ($(el).prop('checked')) {
-               // alert('1');
-
-                $(div).show();
-
-            }
+               $(div).show();
+           }
             else {
-                //alert('2');
-
-                $(div).hide();
+               $(div).hide();
             }
         }
         function changeEnable(el, idDiv) {
@@ -343,8 +298,4 @@
             }
         });
     }
-
-
-
-
 })(jQuery);                                                        // Avoid conflicts with other libraries

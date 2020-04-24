@@ -1,5 +1,4 @@
-<!-- IF S_CLOSETOPICCONDITION_PAGE -->
-    <!-- INCLUDECSS css/jquery.autocomplete.css -->
-    <!-- INCLUDECSS css/acp_closetopiccondition.css -->
-    <!-- INCLUDECSS ./../ext/alg/closetopiccondition/vendor/font-awesome/css/font-awesome.min.css -->
-<!-- ENDIF -->
+{% if S_CLOSETOPICCONDITION_PAGE %}
+   {% INCLUDECSS '@alg_closetopiccondition/css/jquery.autocomplete.css' %}
+   {% INCLUDECSS '@alg_closetopiccondition/css/acp_closetopiccondition.css' %}
+ {% endif %}

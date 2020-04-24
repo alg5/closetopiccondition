@@ -50,8 +50,8 @@ $lang = array_merge($lang, array(
 	'ACP_CLOSE_BY_EACH_CONDITION'				=> 'Закрывать при наличии любого из выбранных условий ',
 	'ACP_CLOSE_BY_ALL_CONDITION'				=> 'Закрывать при наличии всех выбранных условий ',
 
-	'ACP_CLOSETOPICCONDITION_OPTION'				=> 'Ограничить число постов в форуме ',
-	'ACP_CLOSETOPICCONDITION_OPTION_EXPLAIN'				=> 'По наступлению любого из заданных условий форум будет закрыт задачей-кроном',
+    'ACP_CLOSETOPICCONDITION_OPTION'				=> 'Ограничить число постов в форуме ',
+ 	'ACP_CLOSETOPICCONDITION_OPTION_EXPLAIN'				=> 'По наступлению любого из заданных условий форум будет закрыт задачей-кроном',
 	'ACP_CLOSETOPICCONDITION_LIMIT_POSTS'				=> 'Закрыть тему после достижения заданного количества постов ',
 	'ACP_CLOSETOPICCONDITION_INACTIVE_PERIOD_CONDITION'				=> 'Закрыть тему после отсутствия активности в течение заданного периода ',
 	'ACP_CLOSETOPICCONDITION_SELECT'				=> 'Выберите форум',
@@ -101,11 +101,11 @@ $lang = array_merge($lang, array(
 	'ACP_CLOSETOPICCONDITION_GENERAL_TOPICS'				=> 'закрывать только обычные темы',
 	'ACP_CLOSETOPICCONDITION_ALL_TOPICS'				=> 'закрывать все темы',
 
-	'NOTIFICATION_TOPICPOSTER'				=> 'Тема %s закрыта',
+    'NOTIFICATION_TOPICPOSTER'				=> 'Тема %s закрыта',
 	'NOTIFICATION_TOPICPOSTER'				=> 'Тема закрыта',
 	'NOTIFICATION_MODER'				=> 'Тема закрыта',
-	'CLOSETOPICCONDITION_NOTIFICATION_REFERENCE'			=> '«%1$s»',
+ 	'CLOSETOPICCONDITION_NOTIFICATION_REFERENCE'			=> '«%1$s»',
 	'NOTIFICATION_TYPE_TOPICPOSTER'				=> 'Увеломление автора о закрытии темы по лимиту постов',
 	'NOTIFICATION_TYPE_MODER'				=> 'Увеломление модератора о закрытии темы по лимиту постов',
-
+   
 ));

@@ -27,20 +27,17 @@ class closetopiccondition_1_install_acp_module extends \phpbb\db\migration\migra
 
 	public function update_data()
 	{
-		return array(
-			array('config.add', array('closetopiccondition', '1.0.0')),
-
-			// Add ACP modules
-			array('module.add', array('acp', 'ACP_CAT_DOT_MODS', 'ACP_CLOSETOPICCONDITION')),
-
-			array('module.add', array('acp', 'ACP_CLOSETOPICCONDITION', array(
+	return array(
+		array('config.add', array('closetopiccondition', '1.0.0')),
+		// Add ACP modules
+		array('module.add', array('acp', 'ACP_CAT_DOT_MODS', 'ACP_CLOSETOPICCONDITION')),
+		array('module.add', array('acp', 'ACP_CLOSETOPICCONDITION', array(
 					'module_basename'	=> '\alg\closetopiccondition\acp\acp_closetopiccondition_forum_module',
 					'module_langname'	=> 'ACP_CLOSETOPICCONDITION_SETTINGS',
 					'module_mode'		=> 'closetopiccondition_forum',
 					'module_auth'		=> 'ext_alg/closetopiccondition && acl_a_board',
 				))),
-
-			array('module.add', array('acp', 'ACP_CLOSETOPICCONDITION', array(
+            array('module.add', array('acp', 'ACP_CLOSETOPICCONDITION', array(
 					'module_basename'	=> '\alg\closetopiccondition\acp\acp_closetopiccondition_common_module',
 					'module_langname'	=> 'ACP_CLOSETOPICCONDITION_COMMON_SETTINGS',
 					'module_mode'		=> 'closetopiccondition_common',
@@ -52,8 +49,7 @@ class closetopiccondition_1_install_acp_module extends \phpbb\db\migration\migra
 	{
 		return array(
 			// Current version
-				array('config.remove', array('closetopiccondition')),
-
+			array('config.remove', array('closetopiccondition')),
 			// remove from ACP modules
 			array('if', array(
 				array('module.exists', array('acp', 'ACP_CLOSETOPICCONDITION', array(
@@ -86,9 +82,10 @@ class closetopiccondition_1_install_acp_module extends \phpbb\db\migration\migra
 					'module_auth'		=> 'ext_alg/closetopiccondition && acl_a_board',
 					),
 				)),
-			)),
-			array('module.remove', array('acp', 'ACP_CAT_DOT_MODS', 'ACP_CLOSETOPICCONDITION')),
+			)),			
+            array('module.remove', array('acp', 'ACP_CAT_DOT_MODS', 'ACP_CLOSETOPICCONDITION')),
 		);
 	}
 
+    
 }

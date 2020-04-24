@@ -24,15 +24,15 @@ class closetopiccondition_3_install_cron extends \phpbb\db\migration\migration
 	public function update_data()
 	{
 		return array(
-				//array('config.add', array('closetopic_gc', (60 * 60 * 24), '0')),
-				array('config.add', array('closetopic_gc', (60 * 60 ), '0')),
-				array('config.add', array('closetopic_last_gc', '0', '1')),
-				array('config.add', array('closetopic_debug', '0', '1')),
-				array('config.add', array('closetopic_debug_2', '0', '1')),
-				array('config.add', array('closetopic_debug_3', '0', '1')),
+				//array('config.add', array('closetopic_gc', (60 * 60 * 24), '0')), 
+				array('config.add', array('closetopic_gc', (60 * 60 ), '0')), 
+				array('config.add', array('closetopic_last_gc', '0', '1')), 
+				array('config.add', array('closetopic_debug', '0', '1')), 
+				array('config.add', array('closetopic_debug_2', '0', '1')), 
+				array('config.add', array('closetopic_debug_3', '0', '1')), 
 		);
 	}
-	public function revert_data()
+    public function revert_data()
 	{
 		return array(
 			// remove from configs
