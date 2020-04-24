@@ -34,11 +34,11 @@ class closetopiccondition_handler
 
 	/** @var array */
 	protected $thankers = array();
-    
-    //Constants
-    const PARSE_AS_HTML = 0;
-    const PARSE_AS_BBCODE = 1;
-    const NOTY_BBCOD_OPTIONS = 7;
+
+	//Constants
+	const PARSE_AS_HTML = 0;
+	const PARSE_AS_BBCODE = 1;
+	const NOTY_BBCOD_OPTIONS = 7;
 		/**
 	* Constructor
 	* @param \phpbb\db\driver\driver_interface	$db		DBAL object
@@ -53,17 +53,17 @@ class closetopiccondition_handler
 	*/
 
 	public function __construct(\phpbb\db\driver\driver_interface $db
-                                                    , \phpbb\auth\auth $auth
-                                                    , \phpbb\user $user
-                                                     , $phpbb_root_path
-                                                    , $php_ext
-                                                    , \phpbb\request\request_interface $request
-                                                    , \phpbb\controller\helper $controller_helper
-                                                     , \phpbb\config\config $config
-                                                    , $users_table
-                                                    , $groups_table
-                                                    , $closetopiccondition_options_table
-                                                )
+													, \phpbb\auth\auth $auth
+													, \phpbb\user $user
+													 , $phpbb_root_path
+													, $php_ext
+													, \phpbb\request\request_interface $request
+													, \phpbb\controller\helper $controller_helper
+													 , \phpbb\config\config $config
+													, $users_table
+													, $groups_table
+													, $closetopiccondition_options_table
+												)
 	{
 		$this->db = $db;
 		$this->auth = $auth;
@@ -182,148 +182,147 @@ class closetopiccondition_handler
 		if (!$row)
 		{
 		    $this->return = array(
-			    'forum_id'		=> $forum_id ,
-			    'IS_CONDITIONS_EXISTS'		=> 0 ,
-			    'FORUM_NAME'		=> censor_text(str_replace('&quot;', '"', $forum_name))  ,
-			    'LIMITPOSTS_NUMBER'		=> 0 ,
-			    'LIMITTIME_PERIOD'		=> 0 ,
-			    'CLOSE_ONLY_NORMAL_TOPICS'		=> 1 ,
-			    'CLOSE_BY_EACH_CONDITION'		=> 1 ,
-			    'IS_LAST_POST'		=> false ,
-			    'LASTPOSTER_ID'		=> 0 ,
-			    'LASTPOSTER_NAME'		=> '' ,
-			    'LAST_MESSAGE'		=> '' ,
+				'forum_id'		=> $forum_id ,
+				'IS_CONDITIONS_EXISTS'		=> 0 ,
+				'FORUM_NAME'		=> censor_text(str_replace('&quot;', '"', $forum_name))  ,
+				'LIMITPOSTS_NUMBER'		=> 0 ,
+				'LIMITTIME_PERIOD'		=> 0 ,
+				'CLOSE_ONLY_NORMAL_TOPICS'		=> 1 ,
+				'CLOSE_BY_EACH_CONDITION'		=> 1 ,
+				'IS_LAST_POST'		=> false ,
+				'LASTPOSTER_ID'		=> 0 ,
+				'LASTPOSTER_NAME'		=> '' ,
+				'LAST_MESSAGE'		=> '' ,
 		    );
 		}
-        else
-        {
-            $last_message = '';
-            $is_last_post =  (bool) $row['is_last_post'];
-            $is_noty_send =  (bool) $row['is_noty_send'];
-            if ($is_last_post)
-            {
-                $ret = generate_text_for_edit(
+		else
+		{
+			$last_message = '';
+			$is_last_post =  (bool) $row['is_last_post'];
+			$is_noty_send =  (bool) $row['is_noty_send'];
+			if ($is_last_post)
+			{
+				$ret = generate_text_for_edit(
 					$row['lastpost_msg'],
 					$row['lastpost_uid'],
 					$row['lastpost_options']
 				);
-                $last_message = $ret['text'];
-            }
-            if ($is_noty_send)
-            {
-                $ret = generate_text_for_edit(
+				$last_message = $ret['text'];
+			}
+			if ($is_noty_send)
+			{
+				$ret = generate_text_for_edit(
 					$row['topicposter_msg'],
 					$row['topicposter_uid'],
 					$row['topicposter_options']
 				); 
-                $user_message = $ret['text'];
-                $ret = generate_text_for_edit(
+				$user_message = $ret['text'];
+				$ret = generate_text_for_edit(
 					$row['moderator_msg'],
 					$row['moderator_uid'],
 					$row['moderator_options']
 				); 
-                $moder_message = $ret['text'];
-            }
-            
-		    $this->return = array(
-			    'forum_id'		=> $forum_id ,
-			    'IS_CONDITIONS_EXISTS'		=> 1 ,
-			    'FORUM_NAME'		=> sprintf($this->user->lang['ACP_CLOSETOPICCONDITION_FORUM_SELECTED'], $forum_name) ,
-			    'FORUM_NAME'		=> censor_text($forum_name) ,
-			    'LIMITPOSTS_NUMBER'		=> $row['limitposts_number'] ,
-			    'LIMITTIME_PERIOD'		=> $row['limittime_period'] ,
-			    'CLOSE_ONLY_NORMAL_TOPICS'		=>  $row['close_only_normal_topics'] ,
-			    'CLOSE_BY_EACH_CONDITION'		=>  $row['close_by_each_condition'] ,
-			    'IS_LAST_POST'		=> (bool) $row['is_last_post'] ,
-			    'LASTPOSTER_ID'		=> $row['lastposter_id'] ,
-			    'LASTPOSTER_NAME'		=> $row['lastposter_name'] ,
-			    'LAST_MESSAGE'		=> $last_message ,
-		    );
+				$moder_message = $ret['text'];
+			}
+			
+			$this->return = array(
+				'forum_id'		=> $forum_id ,
+				'IS_CONDITIONS_EXISTS'		=> 1 ,
+				'FORUM_NAME'		=> sprintf($this->user->lang['ACP_CLOSETOPICCONDITION_FORUM_SELECTED'], $forum_name) ,
+				'FORUM_NAME'		=> censor_text($forum_name) ,
+				'LIMITPOSTS_NUMBER'		=> $row['limitposts_number'] ,
+				'LIMITTIME_PERIOD'		=> $row['limittime_period'] ,
+				'CLOSE_ONLY_NORMAL_TOPICS'		=>  $row['close_only_normal_topics'] ,
+				'CLOSE_BY_EACH_CONDITION'		=>  $row['close_by_each_condition'] ,
+				'IS_LAST_POST'		=> (bool) $row['is_last_post'] ,
+				'LASTPOSTER_ID'		=> $row['lastposter_id'] ,
+				'LASTPOSTER_NAME'		=> $row['lastposter_name'] ,
+				'LAST_MESSAGE'		=> $last_message ,
+			);
         }
 		$json_response = new \phpbb\json_response;
 		$json_response->send($this->return);
 	}
-    
 	public function save_options()
 	{
-        $this->user->add_lang_ext('alg/closetopiccondition', 'info_acp_closetopiccondition');
-        $forum_id = $this->request->variable('forum_id', 0);
-        $limitposts_number = $this->request->variable('limitposts_number', 0);
-        $limittime_period = $this->request->variable('limittime_period', 0);
+		$this->user->add_lang_ext('alg/closetopiccondition', 'info_acp_closetopiccondition');
+		$forum_id = $this->request->variable('forum_id', 0);
+		$limitposts_number = $this->request->variable('limitposts_number', 0);
+		$limittime_period = $this->request->variable('limittime_period', 0);
 
-        $chkCloseOnlyNormalTopics = $this->request->variable('chkCloseOnlyNormalTopics', 1);
-        $chkCloseByEachCondition = $this->request->variable('chkCloseByEachCondition', 1);
-        $chkLastPost = $this->request->variable('chkLastPost', false);
-       $username='';
-       $lastposter_color = '';
-        $txtLastPost=$txtUser=$txtModer = '';
-        $uid_lastpost = $bitfield_lastpost = $uid_user = $bitfield_user = $uid_moder = $bitfield_moder = '';
+		$chkCloseOnlyNormalTopics = $this->request->variable('chkCloseOnlyNormalTopics', 1);
+		$chkCloseByEachCondition = $this->request->variable('chkCloseByEachCondition', 1);
+		$chkLastPost = $this->request->variable('chkLastPost', false);
+		$username='';
+		$lastposter_color = '';
+		$txtLastPost=$txtUser=$txtModer = '';
+		$uid_lastpost = $bitfield_lastpost = $uid_user = $bitfield_user = $uid_moder = $bitfield_moder = '';
 		$options_lastpost=$options_user=$options_moder=closetopiccondition_handler::NOTY_BBCOD_OPTIONS;
-        $user_id_ary = array();
+		$user_id_ary = array();
 		$usernames = array();
-        $lastposter_id = 0;
-        $noty_sender_id = 0;
-        $res = '';
+		$lastposter_id = 0;
+		$noty_sender_id = 0;
+		$res = '';
 
-        if ($chkLastPost == true)
-        {
-		    $txtLastPost = utf8_normalize_nfc($this->request->variable('txtLastPost', '',true));
-		    $username = utf8_normalize_nfc($this->request->variable('usersearch', '',true));
-            if($txtLastPost != '' && $username != '')
-            {
-                $usernames[] = $username;
+		if ($chkLastPost == true)
+		{
+			$txtLastPost = utf8_normalize_nfc($this->request->variable('txtLastPost', '',true));
+			$username = utf8_normalize_nfc($this->request->variable('usersearch', '',true));
+			if($txtLastPost != '' && $username != '')
+			{
+				$usernames[] = $username;
 				if (!function_exists('user_get_id_name'))
 				{
 					include($this->phpbb_root_path . 'includes/functions_user.' . $this->php_ext);
 				}
 				//user_get_id_name($user_id_ary, $usernames, array(USER_NORMAL, USER_FOUNDER, USER_INACTIVE));
 				$res = user_get_id_name($user_id_ary, $usernames);
-                if ($res == 'NO_USERS')
-                {
-                    $message = sprintf($this->user->lang['ACP_CLOSETOPICCONDITION_NO_USERS'], $username);
-                    $this->error[] = array('error' => sprintf($this->user->lang['ACP_CLOSETOPICCONDITION_NO_USERS'], $username));
-			        $json_response = new \phpbb\json_response;
-			        $json_response->send($this->error);
-                }
-                $lastposter_id = $user_id_ary[0];
-                $txtLastPost = $this->parse_text_by_parse_type(closetopiccondition_handler::PARSE_AS_BBCODE, $txtLastPost, $uid_lastpost, $bitfield_lastpost, $options_lastpost);
-                //get lastposter_data
-                $sql = "SELECT user_colour FROM " . USERS_TABLE . " WHERE user_id=" . (int) $lastposter_id;
-		        $result = $this->db->sql_query($sql);
-		        $lastposter_color = $this->db->sql_fetchfield('user_colour');
-		        $this->db->sql_freeresult($result);
+				if ($res == 'NO_USERS')
+				{
+					$message = sprintf($this->user->lang['ACP_CLOSETOPICCONDITION_NO_USERS'], $username);
+					$this->error[] = array('error' => sprintf($this->user->lang['ACP_CLOSETOPICCONDITION_NO_USERS'], $username));
+					$json_response = new \phpbb\json_response;
+					$json_response->send($this->error);
+				}
+				$lastposter_id = $user_id_ary[0];
+				$txtLastPost = $this->parse_text_by_parse_type(closetopiccondition_handler::PARSE_AS_BBCODE, $txtLastPost, $uid_lastpost, $bitfield_lastpost, $options_lastpost);
+				//get lastposter_data
+				$sql = "SELECT user_colour FROM " . USERS_TABLE . " WHERE user_id=" . (int) $lastposter_id;
+				$result = $this->db->sql_query($sql);
+				$lastposter_color = $this->db->sql_fetchfield('user_colour');
+				$this->db->sql_freeresult($result);
 
-            }
-            else
-            {
-                $txtLastPost = '';
-                $username='';
-            }
+			}
+			else
+			{
+				$txtLastPost = '';
+				$username='';
+			}
 
-        }
+		}
 
-        $save_data = array(
-            'forum_id'	=> $forum_id,
-            'limitposts_number'	=>$limitposts_number,
-            'limittime_period'	=> $limittime_period,
-            'close_only_normal_topics'	=> $chkCloseOnlyNormalTopics ? 1 : 0,
-            'close_by_each_condition'	=> $chkCloseByEachCondition ? 1 : 0,
-            'is_last_post'	=> $chkLastPost ? 1 : 0,
-            'lastposter_id'	=> $lastposter_id,
-            'lastposter_name'	=> $username,
-            'lastposter_color'	=> $lastposter_color,
-            'lastpost_msg'	=> $txtLastPost,
-            'lastpost_uid'	=> $uid_lastpost,
-            'lastpost_bitfield'	=> $bitfield_lastpost,
-            'lastpost_options'	=> $options_lastpost,
-            );
-         $save_data_upd = $save_data;
-         unset($save_data_upd['forum_id']);
-        //add to DB
-        $sql = 'INSERT INTO ' . $this->closetopiccondition_options_table . ' ' . $this->db->sql_build_array('INSERT', $save_data) .
-        ' ON DUPLICATE KEY UPDATE ' . $this->db->sql_build_array('UPDATE', $save_data_upd);
-                $this->db->sql_query($sql);
-        //$noty_id = $this->db->sql_nextid();
+		$save_data = array(
+			'forum_id'	=> $forum_id,
+			'limitposts_number'	=>$limitposts_number,
+			'limittime_period'	=> $limittime_period,
+			'close_only_normal_topics'	=> $chkCloseOnlyNormalTopics ? 1 : 0,
+			'close_by_each_condition'	=> $chkCloseByEachCondition ? 1 : 0,
+			'is_last_post'	=> $chkLastPost ? 1 : 0,
+			'lastposter_id'	=> $lastposter_id,
+			'lastposter_name'	=> $username,
+			'lastposter_color'	=> $lastposter_color,
+			'lastpost_msg'	=> $txtLastPost,
+			'lastpost_uid'	=> $uid_lastpost,
+			'lastpost_bitfield'	=> $bitfield_lastpost,
+			'lastpost_options'	=> $options_lastpost,
+			);
+		 $save_data_upd = $save_data;
+		 unset($save_data_upd['forum_id']);
+		//add to DB
+		$sql = 'INSERT INTO ' . $this->closetopiccondition_options_table . ' ' . $this->db->sql_build_array('INSERT', $save_data) .
+		' ON DUPLICATE KEY UPDATE ' . $this->db->sql_build_array('UPDATE', $save_data_upd);
+				$this->db->sql_query($sql);
+		//$noty_id = $this->db->sql_nextid();
 		$this->return = array(
 			'MESSAGE'		=> $this->user->lang['ACP_CLOSETOPICCONDITION_SAVED'] ,
 		);
@@ -343,21 +342,21 @@ class closetopiccondition_handler
 		$json_response = new \phpbb\json_response;
 		$json_response->send($this->return);
 	}
-    public function update_period()
-    {
-        $this->user->add_lang_ext('alg/closetopiccondition', 'info_acp_closetopiccondition');
-        $closetopiccondition_period = (int) $this->request->variable('closetopiccondition_period', 1);   
-        $this->config->set('closetopiccondition_period', $closetopiccondition_period);
-        $this->config->set('closetopic_gc', 60*60*24 / $closetopiccondition_period);
-        
+	public function update_period()
+	{
+		$this->user->add_lang_ext('alg/closetopiccondition', 'info_acp_closetopiccondition');
+		$closetopiccondition_period = (int) $this->request->variable('closetopiccondition_period', 1);   
+		$this->config->set('closetopiccondition_period', $closetopiccondition_period);
+		$this->config->set('closetopic_gc', 60*60*24 / $closetopiccondition_period);
+		
 		$this->return = array(
 			'MESSAGE'		=> $this->user->lang['ACP_CLOSETOPICCONDITION_PERIOD_SAVED'] ,
-//			'closetopiccondition_period_config'		=>$this->config['closetopiccondition_period'] ,
+	//			'closetopiccondition_period_config'		=>$this->config['closetopiccondition_period'] ,
 		);
 		$json_response = new \phpbb\json_response;
 		$json_response->send($this->return);
-        
-    }
+		
+	}
 	private function get_user_ids_by_groups_ary(&$user_id_ary, $group_id_ary)
 	{
 
@@ -419,33 +418,33 @@ class closetopiccondition_handler
 		}
 	}
  
-    public function get_router_path($action)
-    {
-        $action_path = 'alg_closetopiccondition_controller_' . $action;
-        //print_r('$action = ' . $action . '; $action_path = ' . $action_path);
-        return $this->controller_helper->route($action_path);
-    }
-    function last_post_replay($forum_info, $topic_info, &$data)
-    {
-        $topic_id = $topic_info['topic_id'];   
-        $forum_id = $topic_info['forum_id'];   
-        $post_id = 0;
+	public function get_router_path($action)
+	{
+		$action_path = 'alg_closetopiccondition_controller_' . $action;
+		//print_r('$action = ' . $action . '; $action_path = ' . $action_path);
+		return $this->controller_helper->route($action_path);
+	}
+	function last_post_replay($forum_info, $topic_info, &$data)
+	{
+		$topic_id = $topic_info['topic_id'];   
+		$forum_id = $topic_info['forum_id'];   
+		$post_id = 0;
 
-        $subject= $topic_info['topic_title'];
-            $message = $forum_info['lastpost_msg'];
-            //$message =  sprintf($message, '"' . $topic_info['topic_title'] . '"' , $forum_info['limitposts_lastposter_name']);
-            $message = str_replace ('%1s', '"' . $topic_info['topic_title'] . '"', $message);
-            $message = str_replace ('%2s',    $topic_info['topic_first_poster_name']   , $message);
-            $mode = 'reply';
-		    // HTML, BBCode, Smilies, Images and Flash status
-		    $bbcode_status	= ($this->config['allow_bbcode'] ) ? true : false;
-		    $smilies_status	= ($this->config['allow_smilies'] ) ? true : false;
-		    $img_status		= ($bbcode_status ) ? true : false;
-		    $url_status		= ($this->config['allow_post_links']) ? true : false;
-		    $flash_status	= false;
-		    $quote_status	= true;
-		    if (!sizeof($this->error))
-		    {
+		$subject= $topic_info['topic_title'];
+			$message = $forum_info['lastpost_msg'];
+			//$message =  sprintf($message, '"' . $topic_info['topic_title'] . '"' , $forum_info['limitposts_lastposter_name']);
+			$message = str_replace ('%1s', '"' . $topic_info['topic_title'] . '"', $message);
+			$message = str_replace ('%2s',    $topic_info['topic_first_poster_name']   , $message);
+			$mode = 'reply';
+			// HTML, BBCode, Smilies, Images and Flash status
+			$bbcode_status	= ($this->config['allow_bbcode'] ) ? true : false;
+			$smilies_status	= ($this->config['allow_smilies'] ) ? true : false;
+			$img_status		= ($bbcode_status ) ? true : false;
+			$url_status		= ($this->config['allow_post_links']) ? true : false;
+			$flash_status	= false;
+			$quote_status	= true;
+			if (!sizeof($this->error))
+			{
 			    $data = array(
 				'topic_title'			=> $topic_info['topic_title'],
 				'post_id'				=> 0,
@@ -478,11 +477,11 @@ class closetopiccondition_handler
 			include_once($this->phpbb_root_path .  'includes/functions_posting.' . $this->php_ext);
 			$this->submit_new_post($data);
 			return $data;
-                }	
-     }
-     private function submit_new_post(&$data)
-    {
-   		// Prepare new post data 
+				}	
+	 }
+	 private function submit_new_post(&$data)
+	{
+		// Prepare new post data 
 		$sql_data[POSTS_TABLE]['sql'] = array(
 			'forum_id'			=> $data['forum_id'],
 			'topic_id'			=> $data['topic_id'],
@@ -526,7 +525,6 @@ class closetopiccondition_handler
 		$sql_data[USERS_TABLE]['stat'][] = "user_lastpost_time = " . $data['post_time'] . (($this->auth->acl_get('f_postcount', $data['forum_id']) ) ? ', user_posts = user_posts + 1' : '');
 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_posts_approved = forum_posts_approved + 1';
 
-
 		//insert new post  into phpbb_posts
 		$sql = 'INSERT INTO ' . POSTS_TABLE . ' ' . $this->db->sql_build_array('INSERT', $sql_data[POSTS_TABLE]['sql']);
 		$this->db->sql_query($sql);
@@ -550,9 +548,9 @@ class closetopiccondition_handler
 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_poster_id = ' . (int) $data['poster_id'];
 		$sql_data[FORUMS_TABLE]['stat'][] = "forum_last_poster_name = '" . $this->db->sql_escape($data['post_username']). "'";
 		$sql_data[FORUMS_TABLE]['stat'][] = "forum_last_poster_colour = '" . $this->db->sql_escape($data['poster_color']) . "'";
- 		
+
 		unset($sql_data[POSTS_TABLE]['sql']);
-      
+
 		// Update the topics table
 		if (isset($sql_data[TOPICS_TABLE]['sql']))
 		{
@@ -607,7 +605,6 @@ class closetopiccondition_handler
 		$params = $add_anchor = '';
 
 		$params .= '&amp;t=' . $data['topic_id'];
-    
   
 		$url = (!$params) ? "{$this->phpbb_root_path}viewforum.$this->php_ext" : "{$this->phpbb_root_path}viewtopic.$this->php_ext";
 		$url = append_sid($url, 'f=' . $data['forum_id'] . $params) . $add_anchor;
@@ -632,5 +629,5 @@ class closetopiccondition_handler
 		  add_log('mod', $topic_data['forum_id'], $topic_data['topic_id'], 'LOG_' . 'LOCK', $topic_data['topic_title']);
 
 		}
-	}   
+	}
 }

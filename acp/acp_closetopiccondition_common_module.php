@@ -30,7 +30,6 @@ class acp_closetopiccondition_common_module
 			'S_CLOSETOPICCONDITION_PAGE'			=> true,
 			'U_CLOSETOPICCONDITION_PATH_PERIOD'	=> $controller->get_router_path('period'),
 			'CLOSETOPICCONDITION_PERIOD'			=>  isset($config['closetopiccondition_period']) ? (int) $config['closetopiccondition_period']  : 1,
-            
 		));
 	}
 }

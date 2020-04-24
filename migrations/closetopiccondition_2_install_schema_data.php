@@ -19,17 +19,17 @@ class closetopiccondition_2_install_schema_data extends \phpbb\db\migration\migr
 	{
 		return array('\alg\closetopiccondition\migrations\closetopiccondition_1_install_acp_module');
 	}
-    public function update_schema()
+	public function update_schema()
 	{
 		return 	array
-        (
-            'add_tables' => array
-            (
-                    $this->table_prefix . 'closetopiccondition_options' => array(
-                        'COLUMNS'		=> array(
-                            'forum_id'		=> array('UINT:8',  0),
-                            'limitposts_number'		=> array('UINT:4',  0),
-                            'limittime_period'		=> array('UINT:4',  0),
+		(
+			'add_tables' => array
+			(
+					$this->table_prefix . 'closetopiccondition_options' => array(
+						'COLUMNS'		=> array(
+							'forum_id'		=> array('UINT:8',  0),
+							'limitposts_number'		=> array('UINT:4',  0),
+							'limittime_period'		=> array('UINT:4',  0),
 				'close_only_normal_topics' => array('TINT:1', 1),
 				'close_by_each_condition' => array('TINT:1', 1),
 				'is_last_post' => array('TINT:1', 0),
@@ -40,21 +40,21 @@ class closetopiccondition_2_install_schema_data extends \phpbb\db\migration\migr
 				'lastpost_uid' => array('VCHAR:8', ''),
 				'lastpost_bitfield' => array('VCHAR:255', ''),
 				'lastpost_options' => array('UINT:11', 7),
-                       ),
-                        'PRIMARY_KEY'	=> array('forum_id'),
-                    ),
-            ),			
-        );
+					   ),
+						'PRIMARY_KEY'	=> array('forum_id'),
+					),
+			),			
+		);
 	}
 
 	public function revert_schema()
 	{
 		return 	array(
-           // 'drop_tables'	=> array($this->table_prefix . 'closetopiccondition_options'),
-        );
+		   // 'drop_tables'	=> array($this->table_prefix . 'closetopiccondition_options'),
+		);
 	}
-    
-    	public function update_data()
+
+	public function update_data()
 	{
 		return array(
 			// Add configs
@@ -70,6 +70,4 @@ class closetopiccondition_2_install_schema_data extends \phpbb\db\migration\migr
 			array('config.remove', array('closetopiccondition')),
 		);
 	}
-
-
 }
