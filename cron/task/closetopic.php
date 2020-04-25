@@ -179,9 +179,9 @@ class closetopic extends \phpbb\cron\task\base
 				'icon_id'				=> 0,
 				'poster_id'				=> (int) $forum_info['lastposter_id'],
 				'post_username'				=> $forum_info['lastposter_name'],
-				'poster_color'				=> $forum_info['lastposter_color'],
-				'forum_name'				=> $forum_info['forum_name'],
-				'enable_sig'			=> (bool)(!$this->config['allow_sig'] || !$this->auth->acl_get('f_sigs', $topic_info['forum_id']) || !$this->auth->acl_get('u_sig')) ? false : ((isset($reply_data['attach_sig']) ) ? true : false),
+				'poster_color'			=> $forum_info['lastposter_color'],
+				'forum_name'			=> $forum_info['forum_name'],
+				'enable_sig'			=> (bool) (!$this->config['allow_sig'] || !$this->auth->acl_get('f_sigs', $topic_info['forum_id']) || !$this->auth->acl_get('u_sig')) ? false : ((isset($reply_data['attach_sig'])) ? true : false),
 				'enable_bbcode'			=> (bool) $bbcode_status,
 				'enable_smilies'		=> (bool) $smilies_status,
 				'enable_urls'			=> (bool) $url_status,
@@ -207,7 +207,7 @@ class closetopic extends \phpbb\cron\task\base
 	}
 	private function submit_new_post(&$data)
 	{
-		// Prepare new post data 
+		// Prepare new post data
 		$sql_data[POSTS_TABLE]['sql'] = array(
 			'forum_id'			=> $data['forum_id'],
 			'topic_id'			=> $data['topic_id'],
@@ -339,7 +339,7 @@ class closetopic extends \phpbb\cron\task\base
 //		return;
 
 	}
-	public function close_topic( $topic_data)
+	public function close_topic($topic_data)
 	{
 		//Lock topic and give error warning
 		$sql = 'UPDATE ' . TOPICS_TABLE .

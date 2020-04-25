@@ -71,7 +71,7 @@ class closetopiccondition_handler
 	}
 
 
-    public function live_search_forum()
+	public function live_search_forum()
 	{
 		$q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
 		$sql = "SELECT  f.forum_id, f.forum_name, pf.forum_name as forum_parent_name  " .
@@ -213,7 +213,7 @@ class closetopiccondition_handler
 				);
 				$moder_message = $ret['text'];
 			}
-			
+
 			$this->return = array(
 				'forum_id'		=> $forum_id ,
 				'IS_CONDITIONS_EXISTS'		=> 1 ,
@@ -470,7 +470,7 @@ class closetopiccondition_handler
 	 }
 	private function submit_new_post(&$data)
 	{
-		// Prepare new post data 
+		// Prepare new post data
 		$sql_data[POSTS_TABLE]['sql'] = array(
 			'forum_id'			=> $data['forum_id'],
 			'topic_id'			=> $data['topic_id'],
