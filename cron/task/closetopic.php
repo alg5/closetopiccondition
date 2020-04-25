@@ -99,7 +99,7 @@ class closetopic extends \phpbb\cron\task\base
 			$forums_arr[] = $row;
 		}
 		$this->db->sql_freeresult($result);
-		
+
 		foreach ($forums_arr as $forum)
 		{
 			$forum_id = (int) $forum['forum_id'];
@@ -107,8 +107,8 @@ class closetopic extends \phpbb\cron\task\base
 			$limittime_period = (int) $forum['limittime_period'];
 			$close_only_normal_topics = (int) $forum['close_only_normal_topics'];
 			$close_by_each_condition = (int) $forum['close_by_each_condition'];
-			$sql = "SELECT * FROM " . TOPICS_TABLE . 
-						" WHERE forum_id=" . $forum_id . 
+			$sql = "SELECT * FROM " . TOPICS_TABLE .
+						" WHERE forum_id=" . $forum_id .
 						" AND topic_status <> " . ITEM_LOCKED;
 			if ( $limitposts_number > 0 && $limittime_period > 0)
 			{
@@ -139,21 +139,21 @@ class closetopic extends \phpbb\cron\task\base
 				$sql .= " AND topic_type = " . POST_NORMAL;
 			}
 			$result = $this->db->sql_query($sql);
-			
-				while ($row = $this->db->sql_fetchrow($result))
+
+			while ($row = $this->db->sql_fetchrow($result))
+			{
+				$topics[] = $row;
+				$post_id = $row['topic_last_post_id'];
+				if ($forum['is_last_post'] && $forum['lastposter_id'] && $forum['lastpost_msg'])
 				{
-					$topics[] = $row;
-					$post_id = $row['topic_last_post_id'];
-					if ($forum['is_last_post'] && $forum['lastposter_id'] && $forum['lastpost_msg'])
-					{
-						//create last post
-	//                        $topic_id = $row['topic_id'];    
-						$this->last_post_replay($forum, $row, $data);
-						$post_id = $data['post_id'];
-					 }
+					//create last post
+//                        $topic_id = $row['topic_id'];
+					$this->last_post_replay($forum, $row, $data);
+					$post_id = $data['post_id'];
+				 }
 //			$this->config->set('closetopic_debug_2', 'qwerty');
-					$this->close_topic($row);
-				}
+				$this->close_topic($row);
+			}
 				//add_log('mod', $post_data['forum_id'], $post_data['topic_id'], 'LOG_' . 'LOCK', $post_data['topic_title']);
 			//}//end $limitposts_number
 		}
@@ -168,7 +168,7 @@ class closetopic extends \phpbb\cron\task\base
 		$url_status		= ($this->config['allow_post_links']) ? true : false;
 		$flash_status	= false;
 		$quote_status	= true;
-	   // if (!sizeof($this->error))
+		// if (!sizeof($this->error))
 		if (true)
 		{
 			$data = array(
@@ -180,7 +180,7 @@ class closetopic extends \phpbb\cron\task\base
 				'poster_id'				=> (int) $forum_info['lastposter_id'],
 				'post_username'				=> $forum_info['lastposter_name'],
 				'poster_color'				=> $forum_info['lastposter_color'],
-				'forum_name'				=>  $forum_info['forum_name'],
+				'forum_name'				=> $forum_info['forum_name'],
 				'enable_sig'			=> (bool)(!$this->config['allow_sig'] || !$this->auth->acl_get('f_sigs', $topic_info['forum_id']) || !$this->auth->acl_get('u_sig')) ? false : ((isset($reply_data['attach_sig']) ) ? true : false),
 				'enable_bbcode'			=> (bool) $bbcode_status,
 				'enable_smilies'		=> (bool) $smilies_status,
@@ -205,9 +205,9 @@ class closetopic extends \phpbb\cron\task\base
 			 return $data;
 		}
 	}
-	 private function submit_new_post(&$data)
+	private function submit_new_post(&$data)
 	{
- 		// Prepare new post data 
+		// Prepare new post data 
 		$sql_data[POSTS_TABLE]['sql'] = array(
 			'forum_id'			=> $data['forum_id'],
 			'topic_id'			=> $data['topic_id'],
@@ -247,7 +247,7 @@ class closetopic extends \phpbb\cron\task\base
 		$sql_data[USERS_TABLE]['sql'] = array(
 			'user_lastpost_time'		=> $data['post_time'],
 		);
-        $current_time = $data['post_time'];
+		$current_time = $data['post_time'];
 		$sql_data[USERS_TABLE]['stat'][] = "user_lastpost_time = " . $data['post_time'] . (($this->auth->acl_get('f_postcount', $data['forum_id']) ) ? ', user_posts = user_posts + 1' : '');
 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_posts_approved = forum_posts_approved + 1';
 
@@ -264,19 +264,19 @@ class closetopic extends \phpbb\cron\task\base
 			'topic_last_poster_colour'	=>$data['poster_color'],
 			'topic_last_post_subject'	=> (string) $data['topic_title'],
 		);
-		
+
 		// Update total post count and forum information
 		set_config_count('num_posts', 1, true);
 		//update relation tables
- 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_post_id = ' . $data['post_id'];
+		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_post_id = ' . $data['post_id'];
 		$sql_data[FORUMS_TABLE]['stat'][] = "forum_last_post_subject = '" . $this->db->sql_escape($data['topic_title']) . "'";
 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_post_time = ' . $current_time;
 		$sql_data[FORUMS_TABLE]['stat'][] = 'forum_last_poster_id = ' . (int) $data['poster_id'];
 		$sql_data[FORUMS_TABLE]['stat'][] = "forum_last_poster_name = '" . $this->db->sql_escape($data['post_username']). "'";
 		$sql_data[FORUMS_TABLE]['stat'][] = "forum_last_poster_colour = '" . $this->db->sql_escape($data['poster_color']) . "'";
- 		
+
 		unset($sql_data[POSTS_TABLE]['sql']);
-	  
+
 		// Update the topics table
 		if (isset($sql_data[TOPICS_TABLE]['sql']))
 		{
@@ -288,7 +288,7 @@ class closetopic extends \phpbb\cron\task\base
 			unset($sql_data[TOPICS_TABLE]['sql']);
 		}
 		// Update the posts table ??? CHECK
-	    if (isset($sql_data[POSTS_TABLE]['sql']))
+		if (isset($sql_data[POSTS_TABLE]['sql']))
 		{
 			$sql = 'UPDATE ' . POSTS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $sql_data[POSTS_TABLE]['sql']) . '
@@ -338,10 +338,9 @@ class closetopic extends \phpbb\cron\task\base
 //		$this->db->sql_query($sql);
 //		return;
 
-}
-	public  function close_topic( $topic_data)
+	}
+	public function close_topic( $topic_data)
 	{
-	   {
 		//Lock topic and give error warning
 		$sql = 'UPDATE ' . TOPICS_TABLE .
 			  " SET topic_status = " . ITEM_LOCKED .
@@ -351,5 +350,4 @@ class closetopic extends \phpbb\cron\task\base
 
 		add_log('mod', $topic_data['forum_id'], $topic_data['topic_id'], 'LOG_' . 'LOCK', $topic_data['topic_title']);
 	}
-	}   
  }

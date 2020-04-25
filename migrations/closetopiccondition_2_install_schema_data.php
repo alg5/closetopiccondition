@@ -43,14 +43,13 @@ class closetopiccondition_2_install_schema_data extends \phpbb\db\migration\migr
 					   ),
 						'PRIMARY_KEY'	=> array('forum_id'),
 					),
-			),			
+			),
 		);
 	}
 
 	public function revert_schema()
 	{
 		return 	array(
-		   // 'drop_tables'	=> array($this->table_prefix . 'closetopiccondition_options'),
 		);
 	}
 
