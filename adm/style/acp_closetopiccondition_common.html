@@ -1,33 +1,30 @@
 {% INCLUDE 'overall_header.html' %}
-<h1>{L_ACP_CLOSETOPICCONDITION}</h1>
+<h1>{{ lang('ACP_CLOSETOPICCONDITION') }}</h1>
 
-<p>{L_ACP_CLOSETOPICCONDITION_OPTION_EXPLAIN}</p>
-<form id="acp_closetopiccondition_common" method="post" action="{U_ACTION}">
+<p>{{ lang('ACP_CLOSETOPICCONDITION_OPTION_EXPLAIN') }}</p>
+<form id="acp_closetopiccondition_common" method="post" action="{{ U_ACTION }}">
 	<div id="blockLimitPostsPeriod">
-            <fieldset >
-	            <legend>{L_ACP_CLOSETOPICCONDITION_NUMBER_OPTIONS}</legend>
-                <dl>
-		            <dt><label for="closetopiccondition_period">{L_ACP_CLOSETOPICCONDITION_PERIOD}{L_COLON}</label><br /> 
-                        <span>{L_ACP_CLOSETOPICCONDITION_PERIOD_EXPLAIN}</span>
-                    </dt>
-		            <dd>
-                        <select  id="closetopiccondition_period" name="closetopiccondition_period" >
-                            <option value="1" <!-- IF CLOSETOPICCONDITION_PERIOD eq 1 -->selected<!-- ENDIF -->>{L_ACP_CLOSETOPICCONDITION_PERIOD_0}</option>
-                            <option value="2" <!-- IF CLOSETOPICCONDITION_PERIOD eq 2 -->selected<!-- ENDIF -->>{L_ACP_CLOSETOPICCONDITION_PERIOD_1}</option>
-                            <option value="4" <!-- IF CLOSETOPICCONDITION_PERIOD eq 6 -->selected<!-- ENDIF -->>{L_ACP_CLOSETOPICCONDITION_PERIOD_2}</option>
-                            <option value="24" <!-- IF CLOSETOPICCONDITION_PERIOD eq 24 -->selected<!-- ENDIF -->>{L_ACP_CLOSETOPICCONDITION_PERIOD_3}</option>
-                        </select>
-                    </dd>
-	            </dl>        
- 
-            
-            </div>       
+		<fieldset >
+			<legend>{{ lang('ACP_CLOSETOPICCONDITION_NUMBER_OPTIONS') }}</legend>
+			<dl>
+				<dt><label for="closetopiccondition_period">{{ lang('ACP_CLOSETOPICCONDITION_PERIOD') }}{{ lang('COLON') }}</label><br /> 
+					<span>{{ lang('ACP_CLOSETOPICCONDITION_PERIOD_EXPLAIN') }}</span>
+				</dt>
+				<dd>
+					<select  id="closetopiccondition_period" name="closetopiccondition_period" >
+						<option value="1" {% if CLOSETOPICCONDITION_PERIOD eq 1 %}selected{% endif %}>{{ lang('ACP_CLOSETOPICCONDITION_PERIOD_0') }}</option>
+						<option value="2" {% if CLOSETOPICCONDITION_PERIOD eq 2 %}selected{% endif %}>{{ lang('ACP_CLOSETOPICCONDITION_PERIOD_1') }}</option>
+						<option value="6" {% if CLOSETOPICCONDITION_PERIOD eq 6 %}selected{% endif %}>{{ lang('ACP_CLOSETOPICCONDITION_PERIOD_2') }}</option>
+						<option value="24" {% if CLOSETOPICCONDITION_PERIOD eq 24  %}selected{% endif %}>{{ lang('ACP_CLOSETOPICCONDITION_PERIOD_3') }}</option>
+					</select>
+				</dd>
+			</dl>
+		</fieldset>
+	</div>       
     <fieldset class="submit-buttons">
-	    <legend>{L_SUBMIT}</legend>
+	<legend>{{ lang('SUBMIT') }}</legend>
         <div id="loader_save"></div>
-        <button class="lp-send"  name="btnSavePeriod"  id="btnSavePeriod"><i class="fa fa-upload"></i> {L_ACP_CLOSETOPICCONDITION_SAVE_DATA}</button>
-
+        <button class="lp-send"  name="btnSavePeriod"  id="btnSavePeriod"><i class="fa fa-upload"></i> {{ lang('ACP_CLOSETOPICCONDITION_SAVE_DATA') }}</button>
     </fieldset>   
-</div>
 </form>
 {% INCLUDE 'overall_footer.html' %}
