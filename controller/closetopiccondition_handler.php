@@ -423,4 +423,3 @@ class closetopiccondition_handler
 		return $this->controller_helper->route($action_path);
 	}
 }
-
