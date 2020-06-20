@@ -154,10 +154,10 @@ class closetopic extends \phpbb\cron\task\base
 				 }
 				$this->close_topic($row);
 			}
-			if($forum['archive_forum_id'] && $forum['forum_type'] == FORUM_POST && (int) $forum['forum_id'] != (int) $forum['archive_forum_id'] )
+			if ($forum['archive_forum_id'] && $forum['forum_type'] == FORUM_POST && (int) $forum['forum_id'] != (int) $forum['archive_forum_id'] )
 			{
 				$this->move_topic_to_archive($topic_ids, $forum['forum_id'], $forum['archive_forum_id'], (bool) $forum['leave_shadow']);
-			}			
+			}
 			//}//end $limitposts_number
 		}
 	}
@@ -351,7 +351,7 @@ class closetopic extends \phpbb\cron\task\base
 		$this->db->sql_query($sql);
 		add_log('mod', $topic_data['forum_id'], $topic_data['topic_id'], 'LOG_' . 'LOCK', $topic_data['topic_title']);
 	}
-	public function move_topic_to_archive($topic_ids, $from_forum_id, $to_forum_id, $leave_shadow=false)
+	public function move_topic_to_archive($topic_ids, $from_forum_id, $to_forum_id, $leave_shadow = false)
 	{
 		global $phpbb_container, $phpbb_log;
 		if (!function_exists('move_topics'))
@@ -403,14 +403,14 @@ class closetopic extends \phpbb\cron\task\base
 			$posts_moved_unapproved += $topic_info['topic_posts_unapproved'];
 			$posts_moved_softdeleted += $topic_info['topic_posts_softdeleted'];
 		}
-		
+
 		$this->db->sql_transaction('begin');
 
 		// Move topics, but do not resync yet
 		move_topics($topic_ids, $to_forum_id, false);
-		
+
 		$shadow_topics = 0;
-		$forum_ids = array($to_forum_id);	
+		$forum_ids = array($to_forum_id);
 
 		foreach ($topic_data as $topic_id => $row)
 		{
@@ -473,7 +473,7 @@ class closetopic extends \phpbb\cron\task\base
 				$shadow_topics++;
 			}
 		}
-		
+
 		unset($topic_data);
 		$sync_sql = array();
 		if ($posts_moved)
@@ -491,7 +491,7 @@ class closetopic extends \phpbb\cron\task\base
 			$sync_sql[$to_forum_id][] = 'forum_posts_softdeleted = forum_posts_softdeleted + ' . (int) $posts_moved_softdeleted;
 			$sync_sql[$from_forum_id][] = 'forum_posts_softdeleted = forum_posts_softdeleted - ' . (int) $posts_moved_softdeleted;
 		}
-			
+
 		if ($topics_moved)
 		{
 			$sync_sql[$to_forum_id][] = 'forum_topics_approved = forum_topics_approved + ' . (int) $topics_moved;
@@ -523,6 +523,6 @@ class closetopic extends \phpbb\cron\task\base
 
 		$this->db->sql_transaction('commit');
 
-		sync('forum', 'forum_id', array($from_forum_id, $to_forum_id));		
-	}	
+		sync('forum', 'forum_id', array($from_forum_id, $to_forum_id));
+	}
  }

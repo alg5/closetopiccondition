@@ -33,6 +33,6 @@ class closetopiccondition_4_install_schema_add extends \phpbb\db\migration\migra
 					],
 				],
 		);
-		
+
 	}
 }
