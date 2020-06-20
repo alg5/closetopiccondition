@@ -15,7 +15,10 @@ namespace alg\closetopiccondition\migrations;
 
 class closetopiccondition_3_install_cron extends \phpbb\db\migration\migration
 {
-
+	public function effectively_installed()
+	{
+		return isset($this->config['closetopic_gc']) && isset($this->config['closetopic_last_gc']);
+	}
 	static public function depends_on()
 	{
 		return array('\alg\closetopiccondition\migrations\closetopiccondition_2_install_schema_data');
@@ -27,9 +30,6 @@ class closetopiccondition_3_install_cron extends \phpbb\db\migration\migration
 				//array('config.add', array('closetopic_gc', (60 * 60 * 24), '0')),
 				array('config.add', array('closetopic_gc', (60 * 60 ), '0')),
 				array('config.add', array('closetopic_last_gc', '0', '1')),
-				array('config.add', array('closetopic_debug', '0', '1')),
-				array('config.add', array('closetopic_debug_2', '0', '1')),
-				array('config.add', array('closetopic_debug_3', '0', '1')),
 		);
 	}
 	public function revert_data()
@@ -38,9 +38,6 @@ class closetopiccondition_3_install_cron extends \phpbb\db\migration\migration
 			// remove from configs
 			array('config.remove', array('closetopic_gc')),
 			array('config.remove', array('closetopic_last_gc')),
-			array('config.remove', array('closetopic_debug')),
-			array('config.remove', array('closetopic_debug_2')),
-			array('config.remove', array('closetopic_debug_3')),
 		);
 	}
 

@@ -109,6 +109,9 @@
         $("#chkLastPost").on('change', function () {
              changeEnable(this, "blockLastPost");
         });
+       $("#chkBlockArchive").on('change', function () {
+             changeEnable(this, "blockArchive");
+        });		
 //        $("#chkNotySend").on('change', function () {
 //             changeEnable(this, "blockNotySend");
 //        });
@@ -116,12 +119,19 @@
             e.preventDefault();
             //$("#btnSend").hide(); //debug
             $("#loader_save").css('display', 'inline-block');
+		let cond = $("input[name=chkConditions]").prop('checked');
+console.log(cond);
 
+		if (!cond)
+		{
+			delete_forum_options();
+			return;
+		}
             var limitposts_number = $("#limitposts_number").val();
             var path = U_CLOSETOPICCONDITION_PATH_SAVE;
            data_to_send = $("#acp_closetopiccondition").serialize();
            //alert(data_to_send);
-//           console.log(data_to_send);
+           console.log(data_to_send);
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
@@ -179,6 +189,15 @@
 
 		$("#chkBlockTopicPeriodInactive").prop('checked', parseInt(data.LIMITTIME_PERIOD )> 0);
 		changeEnable($("#chkBlockTopicPeriodInactive"), "blockTopicPeriodInactive");
+		
+		$("#chkBlockArchive").prop('checked', parseInt(data.ARCHIVE_FORUM_ID )> 0);
+		changeEnable($("#chkBlockArchive"), "blockArchive");
+		if (parseInt(data.ARCHIVE_FORUM_ID) >0 )
+		{
+			$("#forum_archive ").find('option[value=' +data.ARCHIVE_FORUM_ID +  ']').attr('selected','selected');
+			$("#chkLeaveShadow").prop('checked', data.LEAVE_SHADOW );
+		}
+		
 		$("#limittime_period").val(data.LIMITTIME_PERIOD);
 
 		$("input[name=chkCloseOnlyNormalTopics][value=" + data.CLOSE_ONLY_NORMAL_TOPICS + "]").prop('checked', true);
@@ -194,10 +213,31 @@
 
 		$("#chkBlockTopicPeriodInactive").prop('checked', parseInt(data.LIMITTIME_PERIOD )> 0);
 		changeEnable($("#chkBlockTopicPeriodInactive"), "blockTopicPeriodInactive");
+		changeEnable($("#chkBlockArchive"), "blockArchive");
 		changeEnable($("#chkLastPost"), "blockLastPost");
 		changeEnable($("#chkNotySend"), "blockNotySend");
         }
-
+        function delete_forum_options()
+        {
+	
+           $("#loader_save").css('display', 'inline-block');
+            var path = U_CLOSETOPICCONDITION_PATH_DELETE;
+           data_to_send = $("#acp_closetopiccondition").serialize();	
+           console.log(data_to_send);
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: data_to_send,
+                url: path,
+                success: function (data) {
+                    //alert('success');
+                    console.log(data);
+                    $("#btnSend").show();
+                    $("#loader_save").hide();
+                    output_info_new(data.MESSAGE, 'warning');
+                }
+            });		   
+        }
         function changeVisible(el, idDiv) {
             var div = $('#' + idDiv);
             if ($(el).prop('checked')) {

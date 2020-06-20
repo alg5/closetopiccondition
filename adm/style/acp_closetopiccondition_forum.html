@@ -92,12 +92,33 @@
 					</dd>
 				</dl>
 			</fieldset>
-			<fieldset class="submit-buttons">
+			
+			<input type="checkbox" id= "chkBlockArchive" name="chkBlockArchive"  class="radio"  />&nbsp;{{ lang('ACP_CLOSETOPICCONDITION_REMOVE_TO_ARCHIVE') }}
+			<div id="blockArchive">
+				<fieldset>
+					<dl>
+						<dt><label for="limitposts_number">{{ lang('ACP_CLOSETOPICCONDITION_CHOOSE_FORUM_ARCHIVE') }}{{ lang('COLON') }}<label><br /> 
+							
+						</dt>
+						<dd><select id="forum_archive" name="forum_archive">{{ S_FORUM_OPTIONS }}</select></dd>
+						<dd><input type="checkbox" id= "chkLeaveShadow" name="chkLeaveShadow"  class="radio"  />&nbsp;{{ lang('LEAVE_SHADOW') }}</dd>
+						</dl>
+				 </fieldset>
+			</div>
+
+<!--			<fieldset class="submit-buttons">
+				<legend>{{ lang('SUBMIT') }}</legend>
+				<div id="loader_save"></div>
+				<button class="lp-send" type="submit" name="btnSend"  id="btnSend"><i class="fa fa-upload"></i> {{ lang('ACP_CLOSETOPICCONDITION_SAVE_DATA') }}</button>
+			</fieldset>   -->
+		</div> 
+		<fieldset class="submit-buttons">
 				<legend>{{ lang('SUBMIT') }}</legend>
 				<div id="loader_save"></div>
 				<button class="lp-send" type="submit" name="btnSend"  id="btnSend"><i class="fa fa-upload"></i> {{ lang('ACP_CLOSETOPICCONDITION_SAVE_DATA') }}</button>
 			</fieldset>   
-		</div>       
 	</div>
+
+
 </form>
 {% INCLUDE 'overall_footer.html' %}

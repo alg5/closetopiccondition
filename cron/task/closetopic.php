@@ -89,7 +89,7 @@ class closetopic extends \phpbb\cron\task\base
 	{
 		$sql = "SELECT  lp.*, f.forum_name, f.forum_type, f.forum_status  FROM " . $this->closetopiccondition_options_table .
 					" lp JOIN " . FORUMS_TABLE . " f on lp.forum_id=f.forum_id" .
-					" WHERE f.forum_type=" . FORUM_POST . " AND f.forum_status <> " . ITEM_LOCKED;
+					" WHERE f.forum_type=" . FORUM_POST ;
 		$result = $this->db->sql_query($sql);
 		$forums_arr = array();
 		$topics = array();
@@ -107,9 +107,10 @@ class closetopic extends \phpbb\cron\task\base
 			$limittime_period = (int) $forum['limittime_period'];
 			$close_only_normal_topics = (int) $forum['close_only_normal_topics'];
 			$close_by_each_condition = (int) $forum['close_by_each_condition'];
+			$topic_ids = array();
 			$sql = "SELECT * FROM " . TOPICS_TABLE .
 						" WHERE forum_id=" . $forum_id .
-						" AND topic_status <> " . ITEM_LOCKED;
+						" AND topic_status = " . ITEM_UNLOCKED;
 			if ( $limitposts_number > 0 && $limittime_period > 0)
 			{
 				$sub_months = '-' . $limittime_period . ' months';
@@ -143,18 +144,20 @@ class closetopic extends \phpbb\cron\task\base
 			while ($row = $this->db->sql_fetchrow($result))
 			{
 				$topics[] = $row;
+				$topic_ids[] = $row['topic_id'];
 				$post_id = $row['topic_last_post_id'];
 				if ($forum['is_last_post'] && $forum['lastposter_id'] && $forum['lastpost_msg'])
 				{
 					//create last post
-//                        $topic_id = $row['topic_id'];
 					$this->last_post_replay($forum, $row, $data);
 					$post_id = $data['post_id'];
 				 }
-//			$this->config->set('closetopic_debug_2', 'qwerty');
 				$this->close_topic($row);
 			}
-				//add_log('mod', $post_data['forum_id'], $post_data['topic_id'], 'LOG_' . 'LOCK', $post_data['topic_title']);
+			if($forum['archive_forum_id'] && $forum['forum_type'] == FORUM_POST && (int) $forum['forum_id'] != (int) $forum['archive_forum_id'] )
+			{
+				$this->move_topic_to_archive($topic_ids, $forum['forum_id'], $forum['archive_forum_id'], (bool) $forum['leave_shadow']);
+			}			
 			//}//end $limitposts_number
 		}
 	}
@@ -346,8 +349,180 @@ class closetopic extends \phpbb\cron\task\base
 			  " SET topic_status = " . ITEM_LOCKED .
 			  " WHERE topic_id = " . $topic_data['topic_id'];
 		$this->db->sql_query($sql);
-		 // $this->config->set('closetopic_debug_3', $topic_data['topic_id'], true);
-
 		add_log('mod', $topic_data['forum_id'], $topic_data['topic_id'], 'LOG_' . 'LOCK', $topic_data['topic_title']);
 	}
+	public function move_topic_to_archive($topic_ids, $from_forum_id, $to_forum_id, $leave_shadow=false)
+	{
+		global $phpbb_container, $phpbb_log;
+		if (!function_exists('move_topics'))
+		{
+			include($this->root_path . 'includes/functions_admin.' . $this->php_ext);
+		}
+		if (!function_exists('phpbb_get_topic_data'))
+		{
+			include($this->root_path . 'includes/functions_mcp.' . $this->php_ext);
+		}
+
+		$forum_data = phpbb_get_forum_data($to_forum_id, 'f_post');
+		if (!count($forum_data))
+		{
+			//TODO
+			//$additional_msg = $user->lang['FORUM_NOT_EXIST'];
+			return;
+		}
+		else
+		{
+			$forum_data = $forum_data[$to_forum_id];
+		}
+		$topic_data = phpbb_get_topic_data($topic_ids);
+
+		$forum_sync_data = array();
+
+		$forum_sync_data[$from_forum_id] = current($topic_data);
+		$forum_sync_data[$to_forum_id] = $forum_data;
+
+		$topics_moved = $topics_moved_unapproved = $topics_moved_softdeleted = 0;
+		$posts_moved = $posts_moved_unapproved = $posts_moved_softdeleted = 0;
+
+		foreach ($topic_data as $topic_id => $topic_info)
+		{
+			if ($topic_info['topic_visibility'] == ITEM_APPROVED)
+			{
+				$topics_moved++;
+			}
+			else if ($topic_info['topic_visibility'] == ITEM_UNAPPROVED || $topic_info['topic_visibility'] == ITEM_REAPPROVE)
+			{
+				$topics_moved_unapproved++;
+			}
+			else if ($topic_info['topic_visibility'] == ITEM_DELETED)
+			{
+				$topics_moved_softdeleted++;
+			}
+
+			$posts_moved += $topic_info['topic_posts_approved'];
+			$posts_moved_unapproved += $topic_info['topic_posts_unapproved'];
+			$posts_moved_softdeleted += $topic_info['topic_posts_softdeleted'];
+		}
+		
+		$this->db->sql_transaction('begin');
+
+		// Move topics, but do not resync yet
+		move_topics($topic_ids, $to_forum_id, false);
+		
+		$shadow_topics = 0;
+		$forum_ids = array($to_forum_id);	
+
+		foreach ($topic_data as $topic_id => $row)
+		{
+			// Get the list of forums to resync
+			$forum_ids[] = $row['forum_id'];
+
+			// We add the $to_forum_id twice, because 'forum_id' is updated
+			// when the topic is moved again later.
+			$phpbb_log->add('mod', $user->data['user_id'], $user->ip, 'LOG_MOVE', false, array(
+//			add_log('mod', $user->data['user_id'], $user->ip, 'LOG_MOVE', false, array(
+				'forum_id'		=> (int) $to_forum_id,
+				'topic_id'		=> (int) $topic_id,
+				$row['forum_name'],
+				$forum_data['forum_name'],
+				(int) $row['forum_id'],
+				(int) $forum_data['forum_id'],
+			));
+
+			if ($leave_shadow && $row['topic_visibility'] == ITEM_APPROVED && $row['topic_type'] != POST_GLOBAL)
+			{
+				$shadow = array(
+					'forum_id'				=>	(int) $row['forum_id'],
+					'icon_id'				=>	(int) $row['icon_id'],
+					'topic_attachment'		=>	(int) $row['topic_attachment'],
+					'topic_visibility'		=>	ITEM_APPROVED, // a shadow topic is always approved
+					'topic_reported'		=>	0, // a shadow topic is never reported
+					'topic_title'			=>	(string) $row['topic_title'],
+					'topic_poster'			=>	(int) $row['topic_poster'],
+					'topic_time'			=>	(int) $row['topic_time'],
+					'topic_time_limit'		=>	(int) $row['topic_time_limit'],
+					'topic_views'			=>	(int) $row['topic_views'],
+					'topic_posts_approved'	=>	(int) $row['topic_posts_approved'],
+					'topic_posts_unapproved'=>	(int) $row['topic_posts_unapproved'],
+					'topic_posts_softdeleted'=>	(int) $row['topic_posts_softdeleted'],
+					'topic_status'			=>	ITEM_MOVED,
+					'topic_type'			=>	POST_NORMAL,
+					'topic_first_post_id'	=>	(int) $row['topic_first_post_id'],
+					'topic_first_poster_colour'=>(string) $row['topic_first_poster_colour'],
+					'topic_first_poster_name'=>	(string) $row['topic_first_poster_name'],
+					'topic_last_post_id'	=>	(int) $row['topic_last_post_id'],
+					'topic_last_poster_id'	=>	(int) $row['topic_last_poster_id'],
+					'topic_last_poster_colour'=>(string) $row['topic_last_poster_colour'],
+					'topic_last_poster_name'=>	(string) $row['topic_last_poster_name'],
+					'topic_last_post_subject'=>	(string) $row['topic_last_post_subject'],
+					'topic_last_post_time'	=>	(int) $row['topic_last_post_time'],
+					'topic_last_view_time'	=>	(int) $row['topic_last_view_time'],
+					'topic_moved_id'		=>	(int) $row['topic_id'],
+					'topic_bumped'			=>	(int) $row['topic_bumped'],
+					'topic_bumper'			=>	(int) $row['topic_bumper'],
+					'poll_title'			=>	(string) $row['poll_title'],
+					'poll_start'			=>	(int) $row['poll_start'],
+					'poll_length'			=>	(int) $row['poll_length'],
+					'poll_max_options'		=>	(int) $row['poll_max_options'],
+					'poll_last_vote'		=>	(int) $row['poll_last_vote']
+				);
+
+				$this->db->sql_query('INSERT INTO ' . TOPICS_TABLE . $this->db->sql_build_array('INSERT', $shadow));
+
+				// Shadow topics only count on new "topics" and not posts... a shadow topic alone has 0 posts
+				$shadow_topics++;
+			}
+		}
+		
+		unset($topic_data);
+		$sync_sql = array();
+		if ($posts_moved)
+		{
+			$sync_sql[$to_forum_id][] = 'forum_posts_approved = forum_posts_approved + ' . (int) $posts_moved;
+			$sync_sql[$from_forum_id][] = 'forum_posts_approved = forum_posts_approved - ' . (int) $posts_moved;
+		}
+		if ($posts_moved_unapproved)
+		{
+			$sync_sql[$to_forum_id][] = 'forum_posts_unapproved = forum_posts_unapproved + ' . (int) $posts_moved_unapproved;
+			$sync_sql[$from_forum_id][] = 'forum_posts_unapproved = forum_posts_unapproved - ' . (int) $posts_moved_unapproved;
+		}
+		if ($posts_moved_softdeleted)
+		{
+			$sync_sql[$to_forum_id][] = 'forum_posts_softdeleted = forum_posts_softdeleted + ' . (int) $posts_moved_softdeleted;
+			$sync_sql[$from_forum_id][] = 'forum_posts_softdeleted = forum_posts_softdeleted - ' . (int) $posts_moved_softdeleted;
+		}
+			
+		if ($topics_moved)
+		{
+			$sync_sql[$to_forum_id][] = 'forum_topics_approved = forum_topics_approved + ' . (int) $topics_moved;
+			if ($topics_moved - $shadow_topics > 0)
+			{
+				$sync_sql[$from_forum_id][] = 'forum_topics_approved = forum_topics_approved - ' . (int) ($topics_moved - $shadow_topics);
+			}
+		}
+		if ($topics_moved_unapproved)
+		{
+			$sync_sql[$to_forum_id][] = 'forum_topics_unapproved = forum_topics_unapproved + ' . (int) $topics_moved_unapproved;
+			$sync_sql[$from_forum_id][] = 'forum_topics_unapproved = forum_topics_unapproved - ' . (int) $topics_moved_unapproved;
+		}
+		if ($topics_moved_softdeleted)
+		{
+			$sync_sql[$to_forum_id][] = 'forum_topics_softdeleted = forum_topics_softdeleted + ' . (int) $topics_moved_softdeleted;
+			$sync_sql[$from_forum_id][] = 'forum_topics_softdeleted = forum_topics_softdeleted - ' . (int) $topics_moved_softdeleted;
+		}
+
+		$success_msg = (count($topic_ids) == 1) ? 'TOPIC_MOVED_SUCCESS' : 'TOPICS_MOVED_SUCCESS';
+		foreach ($sync_sql as $forum_id_key => $array)
+		{
+			$sql = 'UPDATE ' . FORUMS_TABLE . '
+				SET ' . implode(', ', $array) . '
+				WHERE forum_id = ' . $forum_id_key;
+//			print_r($sql);
+			$this->db->sql_query($sql);
+		}
+
+		$this->db->sql_transaction('commit');
+
+		sync('forum', 'forum_id', array($from_forum_id, $to_forum_id));		
+	}	
  }

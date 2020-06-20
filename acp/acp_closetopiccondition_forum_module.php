@@ -19,11 +19,12 @@ class acp_closetopiccondition_forum_module
 
 	function main($id, $mode)
 	{
-		global $template, $config, $phpbb_container;
+		global $template, $config, $phpbb_container, $user;
 		$controller = $phpbb_container->get('alg.closetopiccondition.closetopiccondition_handler');
 
 		$this->tpl_name = 'acp_closetopiccondition_forum';
 		$this->page_title = 'ACP_CLOSETOPICCONDITION_SETTINGS';
+		$user->add_lang('mcp');
 
 		$template->assign_vars(array(
 			'U_ACTION'								=> 'add',
@@ -33,6 +34,7 @@ class acp_closetopiccondition_forum_module
 			'U_CLOSETOPICCONDITION_PATH_GET'			=> $controller->get_router_path('get'),
 			'U_CLOSETOPICCONDITION_PATH_USER'			=> $controller->get_router_path('user'),
 			'U_CLOSETOPICCONDITION_PATH_SAVE'			=> $controller->get_router_path('save'),
+			'U_CLOSETOPICCONDITION_PATH_DELETE'		=> $controller->get_router_path('delete'),
 		));
 	}
 }

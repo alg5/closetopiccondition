@@ -100,6 +100,8 @@ $lang = array_merge($lang, array(
 	'ACP_CLOSETOPICCONDITION_MONTHES'				=> 'месяцев',
 	'ACP_CLOSETOPICCONDITION_GENERAL_TOPICS'				=> 'закрывать только обычные темы',
 	'ACP_CLOSETOPICCONDITION_ALL_TOPICS'				=> 'закрывать все темы',
+	'ACP_CLOSETOPICCONDITION_REMOVE_TO_ARCHIVE'		=> 'Переносить закрытые темы в архив',
+	'ACP_CLOSETOPICCONDITION_CHOOSE_FORUM_ARCHIVE'	=> 'Выберите архивный форум из списка',
 
 	'NOTIFICATION_TOPICPOSTER'				=> 'Тема %s закрыта',
 	'NOTIFICATION_TOPICPOSTER'				=> 'Тема закрыта',
