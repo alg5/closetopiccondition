@@ -26,9 +26,6 @@ class closetopiccondition_handler
 	/** @var \phpbb\request\request_interface */
 	protected $request;
 
-	/** @var \phpbb\notification\manager */
-//	protected $notification_manager;
-
 	/** @var \phpbb\controller\helper */
 	protected $controller_helper;
 
@@ -46,24 +43,21 @@ class closetopiccondition_handler
 	* @param string								$phpbb_root_path	phpbb_root_path
 	* @param string								$php_ext			php_ext
 	* @param \phpbb\request\request					$request	Request object
-		* @param \phpbb\controller\helper					$controller_helper	Controller helper object
+	* @param \phpbb\controller\helper					$controller_helper	Controller helper object
 	* @param array								$return_error		array
 
 	* @access public
 	*/
 
-	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\auth\auth $auth, \phpbb\user $user, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, \phpbb\controller\helper $controller_helper, \phpbb\config\config $config, $users_table, $groups_table, $closetopiccondition_options_table)
+	public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\user $user, $phpbb_root_path, $php_ext, \phpbb\request\request_interface $request, \phpbb\controller\helper $controller_helper, \phpbb\config\config $config, $closetopiccondition_options_table)
 	{
 		$this->db = $db;
-		$this->auth = $auth;
 		$this->user = $user;
 		$this->phpbb_root_path = $phpbb_root_path;
 		$this->php_ext = $php_ext;
 		$this->request = $request;
 		$this->controller_helper = $controller_helper;
 		$this->config = $config;
-		$this->users_table = $users_table;
-		$this->groups_table = $groups_table;
 		$this->closetopiccondition_options_table = $closetopiccondition_options_table;
 
 		$this->return = array(); // save returned data in here
@@ -120,7 +114,7 @@ class closetopiccondition_handler
 	{
 		$q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
 
-		$sql = "SELECT user_id, username  FROM " . $this->users_table .
+		$sql = "SELECT user_id, username  FROM " . USERS_TABLE .
 					" WHERE user_type <> " . USER_IGNORE .
 					" AND username_clean " . $this->db->sql_like_expression(utf8_clean_string( $this->db->sql_escape($q)) . $this->db->get_any_char());
 					" ORDER BY username";
@@ -141,7 +135,7 @@ class closetopiccondition_handler
 	{
 		$q = utf8_strtoupper(utf8_normalize_nfc($this->request->variable('q', '',true)));
 
-		$sql = "SELECT group_id, group_name, group_type  FROM " . $this->groups_table .
+		$sql = "SELECT group_id, group_name, group_type  FROM " . GROUPS_TABLE .
 					" ORDER BY group_type DESC, group_name ASC";
 		$result = $this->db->sql_query($sql);
 		$message='';
@@ -366,7 +360,7 @@ class closetopiccondition_handler
 		$user_id_ary = $username_ary = array();
 
 		$sql = "SELECT u.user_id" .
-					" FROM " . $this->users_table .
+					" FROM " . USERS_TABLE .
 					" u JOIN " . USER_GROUP_TABLE . " ug on u.user_id = ug.user_id " .
 					" WHERE  u.user_type <>" . USER_IGNORE . " AND " .  $this->db->sql_in_set('ug.group_id', $group_id_ary);
 		$this->sql = $sql;

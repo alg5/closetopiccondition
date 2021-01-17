@@ -5,15 +5,12 @@ services:
         class: alg\closetopiccondition\controller\closetopiccondition_handler
         arguments:
             - '@dbal.conn'
-            - '@auth'
             - '@user'
             - '%core.root_path%'
             - '%core.php_ext%'
             - '@request'
             - '@controller.helper'
             - '@config'
-            - '%tables.users%'
-            - '%tables.groups%'
             - '%tables.closetopiccondition_options%'
 
     alg.closetopiccondition.cron.task.closetopic:

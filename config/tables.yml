@@ -1,3 +1,2 @@
 parameters:
-    tables.groups: '%core.table_prefix%groups'
-    tables.closetopiccondition_options: '%core.table_prefix%closetopiccondition_options'
+     tables.closetopiccondition_options: '%core.table_prefix%closetopiccondition_options'
